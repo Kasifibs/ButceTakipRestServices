@@ -1,4 +1,4 @@
-package com.dispinar.butcetakip.server;
+package com.dispinar.butcetakip.server.controller;
 
 import java.util.List;
 

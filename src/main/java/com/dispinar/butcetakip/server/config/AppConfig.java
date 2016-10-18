@@ -20,7 +20,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.dispinar.butcetakip.server.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.dao.ResourceItemDaoJpaImpl;
-import com.dispinar.butcetakip.server.entity.ResourceItem;
 import com.dispinar.butcetakip.server.service.ResourceItemService;
 import com.dispinar.butcetakip.server.service.ResourceItemServiceImpl;
 

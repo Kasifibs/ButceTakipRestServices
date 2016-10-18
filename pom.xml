@@ -26,6 +26,18 @@
         <version>4.3.3.RELEASE</version>
     </dependency>
     
+     <!--  			SPRING SECURITY 						 -->
+    <dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-web</artifactId>
+		<version>4.1.3.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-config</artifactId>
+		<version>4.1.3.RELEASE</version>
+	</dependency>
+    
     <!--                     WEB LIBRARIES                   -->
     <dependency>
         <groupId>org.springframework</groupId>
@@ -103,6 +115,23 @@
   
   <build>
     <finalName>ButceTakipServer</finalName>
+    
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+                <port>8080</port>
+                <httpsPort>8443</httpsPort>
+                <keystoreFile>${project.build.directory}/butceTakip.keystore</keystoreFile>
+                <keystorePass>takip.24.butce</keystorePass>
+            </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
+	
 </project>
