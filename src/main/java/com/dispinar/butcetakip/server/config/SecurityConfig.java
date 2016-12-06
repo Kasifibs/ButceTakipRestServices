@@ -41,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	     return new CustomBasicAuthenticationEntryPoint();
 	 }
 	 
-	 @Override
-	    public void configure(WebSecurity web) throws Exception {
-	        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
-	    }
+ 	@Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+    }
 }

@@ -125,7 +125,7 @@
           <configuration>
                 <port>8080</port>
                 <httpsPort>8443</httpsPort>
-                <keystoreFile>${project.build.directory}/butceTakip.keystore</keystoreFile>
+                <keystoreFile>${user.home}/butceTakip.keystore</keystoreFile>
                 <keystorePass>takip.24.butce</keystorePass>
             </configuration>
         </plugin>
