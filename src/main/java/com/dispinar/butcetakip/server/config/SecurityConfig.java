@@ -1,5 +1,7 @@
 package com.dispinar.butcetakip.server.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.dispinar.butcetakip.server.security.CustomBasicAuthenticationEntryPoint;
 
@@ -21,10 +25,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static String REALM="BT_REST_REALM";
 	
+	@Autowired DataSource dataSource;
+	
 	 @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("appuser").password("takip.24.butce").roles("USER");
+		auth.jdbcAuthentication().dataSource(dataSource) 
+		.passwordEncoder(passwordEncoder())
+		.usersByUsernameQuery("select user_name, password, enabled from users where user_name = ?")
+		.authoritiesByUsernameQuery("select u.user_name, ur.authority from users u, user_roles ur where u.user_id = ur.user_id and u.user_name = ?");
     }
+	
+	@Bean
+	public PasswordEncoder passwordEncoder(){
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		return encoder;
+	}
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
