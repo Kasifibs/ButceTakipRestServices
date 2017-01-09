@@ -18,10 +18,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.dispinar.butcetakip.server.dao.IncomeItemDao;
+import com.dispinar.butcetakip.server.dao.IncomeItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.dao.ResourceItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.dao.UserDao;
 import com.dispinar.butcetakip.server.dao.UserDaoJpaImpl;
+import com.dispinar.butcetakip.server.service.IncomeItemService;
+import com.dispinar.butcetakip.server.service.IncomeItemServiceImpl;
 import com.dispinar.butcetakip.server.service.ResourceItemService;
 import com.dispinar.butcetakip.server.service.ResourceItemServiceImpl;
 import com.dispinar.butcetakip.server.service.UserService;
@@ -84,6 +88,21 @@ public class AppConfig {
 		resourceItemService.setUserService(userService());
 		
 		return resourceItemService;
+	}
+	
+	@Bean
+	public IncomeItemDao incomeItemDao(){
+		IncomeItemDaoJpaImpl incomeItemDao = new IncomeItemDaoJpaImpl();
+		return incomeItemDao;
+	}
+	
+	@Bean
+	public IncomeItemService incomeItemService(){
+		IncomeItemServiceImpl incomeItemService = new IncomeItemServiceImpl();
+		incomeItemService.setIncomeItemDao(incomeItemDao());
+		incomeItemService.setUserService(userService());
+		
+		return incomeItemService;
 	}
 	
 	@Bean
