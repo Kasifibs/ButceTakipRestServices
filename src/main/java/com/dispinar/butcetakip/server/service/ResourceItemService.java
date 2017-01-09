@@ -6,9 +6,9 @@ import com.dispinar.butcetakip.server.entity.ResourceItem;
 
 public interface ResourceItemService {
 
-	public void saveResourceItem(ResourceItem resourceItem);
+	public void saveResourceItem(ResourceItem resourceItem, String username);
 	
-	public List<ResourceItem> getAllResourceItems();
+	public List<ResourceItem> getAllResourceItems(String username);
 	
 	public ResourceItem getResourceItem(Long id);
 	

@@ -22,20 +22,25 @@ public class ResourceItemDaoJpaImpl implements ResourceItemDao{
 	}
 
 	public ResourceItem findByName(String name) {
-		Query findByNameQuery = entityManager.createQuery("select ritem from ResourceItem ritem where ritem.name = ?");
-		findByNameQuery.setParameter(1, name);
+		Query findByNameQuery = entityManager.createQuery("select ritem from ResourceItem ritem where ritem.name = :itemName");
+		findByNameQuery.setParameter("itemName", name);
 		
 		return (ResourceItem) findByNameQuery.getSingleResult();
 	}
 	
-	public List<ResourceItem> findAll() {
-		Query findAllQuery = entityManager.createQuery("select ritem from ResourceItem ritem");
+	@SuppressWarnings("unchecked")
+	public List<ResourceItem> findAll(Long userId) {
+		Query findAllQuery = entityManager.createQuery("select ritem from ResourceItem ritem where ritem.user.id = :userId")
+						     .setParameter("userId", userId);
 		
 		return findAllQuery.getResultList();
 	}
 
 	public ResourceItem update(ResourceItem detachedItem) {
-		return entityManager.merge(detachedItem);
+		ResourceItem attachedResourceItem = entityManager.find(ResourceItem.class, detachedItem.getId());
+		attachedResourceItem.copy(detachedItem);
+		
+		return attachedResourceItem;
 	}
 
 	public void delete(ResourceItem resourceItem) {

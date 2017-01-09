@@ -20,8 +20,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.dispinar.butcetakip.server.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.dao.ResourceItemDaoJpaImpl;
+import com.dispinar.butcetakip.server.dao.UserDao;
+import com.dispinar.butcetakip.server.dao.UserDaoJpaImpl;
 import com.dispinar.butcetakip.server.service.ResourceItemService;
 import com.dispinar.butcetakip.server.service.ResourceItemServiceImpl;
+import com.dispinar.butcetakip.server.service.UserService;
+import com.dispinar.butcetakip.server.service.UserServiceImpl;
 
 @Configuration
 @EnableWebMvc
@@ -77,8 +81,23 @@ public class AppConfig {
 	public ResourceItemService resourceItemService(){
 		ResourceItemServiceImpl resourceItemService = new ResourceItemServiceImpl();
 		resourceItemService.setResourceItemDao(resourceItemDao());
+		resourceItemService.setUserService(userService());
 		
 		return resourceItemService;
+	}
+	
+	@Bean
+	public UserDao userDao(){
+		UserDaoJpaImpl userDao = new UserDaoJpaImpl();
+		return userDao;
+	}
+	
+	@Bean 
+	public UserService userService(){
+		UserServiceImpl userService = new UserServiceImpl();
+		userService.setUserDao(userDao());
+		
+		return userService;
 	}
 	
 }

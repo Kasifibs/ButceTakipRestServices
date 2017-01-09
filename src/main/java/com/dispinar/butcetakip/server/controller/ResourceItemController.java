@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +25,18 @@ public class ResourceItemController {
 	
 	@RequestMapping(value="/kaydet", method=RequestMethod.POST)
 	public void saveResourceItem(@RequestBody ResourceItem resourceItem){
-		resourceItemService.saveResourceItem(resourceItem);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+		
+		resourceItemService.saveResourceItem(resourceItem, username);
 	}
 	
 	@RequestMapping(value="/liste", method=RequestMethod.GET)
 	public List<ResourceItem> getAllResourceItems(){
-		return resourceItemService.getAllResourceItems();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	      
+		return resourceItemService.getAllResourceItems(username);
 	}
 	
 	@RequestMapping(value="/kalem/{id}", method=RequestMethod.GET)

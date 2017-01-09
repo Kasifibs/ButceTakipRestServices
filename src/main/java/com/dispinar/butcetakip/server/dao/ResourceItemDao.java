@@ -12,7 +12,7 @@ public interface ResourceItemDao {
 	
 	public ResourceItem findByName(String name);
 	
-	public List<ResourceItem> findAll();
+	public List<ResourceItem> findAll(Long userId);
 	
 	public ResourceItem update(ResourceItem resourceItem);
 	
