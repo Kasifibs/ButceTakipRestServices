@@ -6,8 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.dispinar.butcetakip.server.common.dao.PeriodDao;
+import com.dispinar.butcetakip.server.common.dao.PeriodDaoImpl;
 import com.dispinar.butcetakip.server.common.dao.UserDao;
 import com.dispinar.butcetakip.server.common.dao.UserDaoJpaImpl;
+import com.dispinar.butcetakip.server.common.service.PeriodService;
+import com.dispinar.butcetakip.server.common.service.PeriodServiceImpl;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.common.service.UserServiceImpl;
 
@@ -29,5 +33,20 @@ public class CommonConfig {
 		userService.setUserDao(userDao());
 		
 		return userService;
+	}
+	
+	@Bean
+	public PeriodDao periodDao(){
+		PeriodDaoImpl periodDao = new PeriodDaoImpl();
+		return periodDao;
+	}
+	
+	@Bean
+	public PeriodService periodService(){
+		PeriodServiceImpl periodService = new PeriodServiceImpl();
+		periodService.setPeriodDao(periodDao());
+		periodService.setUserService(userService());
+		
+		return periodService;
 	}
 }
