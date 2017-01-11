@@ -18,12 +18,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.dispinar.butcetakip.server.dao.ExpenseItemDao;
+import com.dispinar.butcetakip.server.dao.ExpenseItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.dao.IncomeItemDao;
 import com.dispinar.butcetakip.server.dao.IncomeItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.dao.ResourceItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.dao.UserDao;
 import com.dispinar.butcetakip.server.dao.UserDaoJpaImpl;
+import com.dispinar.butcetakip.server.service.ExpenseItemService;
+import com.dispinar.butcetakip.server.service.ExpenseItemServiceImpl;
 import com.dispinar.butcetakip.server.service.IncomeItemService;
 import com.dispinar.butcetakip.server.service.IncomeItemServiceImpl;
 import com.dispinar.butcetakip.server.service.ResourceItemService;
@@ -103,6 +107,21 @@ public class AppConfig {
 		incomeItemService.setUserService(userService());
 		
 		return incomeItemService;
+	}
+	
+	@Bean
+	public ExpenseItemDao expenseItemDao(){
+		ExpenseItemDaoJpaImpl expenseItemDao = new ExpenseItemDaoJpaImpl();
+		return expenseItemDao;
+	}
+	
+	@Bean
+	public ExpenseItemService expenseItemService(){
+		ExpenseItemServiceImpl expenseItemService = new ExpenseItemServiceImpl();
+		expenseItemService.setExpenseItemDao(expenseItemDao());
+		expenseItemService.setUserService(userService());
+		
+		return expenseItemService;
 	}
 	
 	@Bean
