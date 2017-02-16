@@ -10,6 +10,7 @@ import com.dispinar.butcetakip.server.common.dao.PeriodDao;
 import com.dispinar.butcetakip.server.common.dao.PeriodDaoImpl;
 import com.dispinar.butcetakip.server.common.dao.UserDao;
 import com.dispinar.butcetakip.server.common.dao.UserDaoJpaImpl;
+import com.dispinar.butcetakip.server.common.query.PeriodQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.common.service.PeriodService;
 import com.dispinar.butcetakip.server.common.service.PeriodServiceImpl;
 import com.dispinar.butcetakip.server.common.service.UserService;
@@ -38,6 +39,7 @@ public class CommonConfig {
 	@Bean
 	public PeriodDao periodDao(){
 		PeriodDaoImpl periodDao = new PeriodDaoImpl();
+		periodDao.setQueryWithParamsPreparator(queryWithParamsPreparator());
 		return periodDao;
 	}
 	
@@ -48,5 +50,11 @@ public class CommonConfig {
 		periodService.setUserService(userService());
 		
 		return periodService;
+	}
+	
+	@Bean
+	public PeriodQueryWithParamsPreparator queryWithParamsPreparator(){
+		PeriodQueryWithParamsPreparator queryWithParamsPreparator = new PeriodQueryWithParamsPreparator();
+		return queryWithParamsPreparator;
 	}
 }

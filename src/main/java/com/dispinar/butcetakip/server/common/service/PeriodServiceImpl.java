@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import com.dispinar.butcetakip.server.common.dao.PeriodDao;
 import com.dispinar.butcetakip.server.common.entity.Period;
 import com.dispinar.butcetakip.server.common.entity.User;
+import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
 
 @Transactional
 public class PeriodServiceImpl implements PeriodService{
@@ -18,26 +19,32 @@ public class PeriodServiceImpl implements PeriodService{
 		User user = getUserService().getUserByUsername(username);
 		period.setUser(user);
 		
-		getPeriodDao().save(period);
+		periodDao.save(period);
 	}
 
 	public List<Period> getAllPeriods(String username) {
 		User user = getUserService().getUserByUsername(username);
 		
-		return getPeriodDao().findAll(user.getId());
+		return periodDao.findAll(user.getId());
+	}
+	
+	public List<Period> queryPeriods(String username, PeriodQueryParamsWrapper queryParams) {
+		User user = getUserService().getUserByUsername(username);
+		
+		return periodDao.queryPeriods(user.getId(), queryParams);
 	}
 
 	public Period getPeriod(Long id) {
-		return getPeriodDao().findById(id);
+		return periodDao.findById(id);
 	}
 
 	public Period updatePeriod(Period detachedPeriod) {
-		return getPeriodDao().update(detachedPeriod);
+		return periodDao.update(detachedPeriod);
 	}
 
 	public void deletePeriod(Long id) {
 		Period period = getPeriodDao().findById(id);
-		getPeriodDao().delete(period);
+		periodDao.delete(period);
 	}
 
 	public PeriodDao getPeriodDao() {

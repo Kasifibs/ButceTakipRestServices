@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dispinar.butcetakip.server.common.entity.Period;
+import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
 import com.dispinar.butcetakip.server.common.service.PeriodService;
+
+
 
 @RestController
 @RequestMapping("/period")
@@ -36,6 +39,14 @@ public class PeriodController {
 	    String username = auth.getName();
 	      
 		return periodService.getAllPeriods(username);
+	}
+	
+	@RequestMapping(value="/sorgula", method=RequestMethod.GET)
+	public List<Period> queryPeriods(PeriodQueryParamsWrapper queryParams){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	      
+		return periodService.queryPeriods(username, queryParams);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

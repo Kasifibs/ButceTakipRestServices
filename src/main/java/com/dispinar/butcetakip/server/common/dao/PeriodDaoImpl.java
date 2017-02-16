@@ -5,13 +5,19 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.dispinar.butcetakip.server.common.entity.Period;
+import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
+import com.dispinar.butcetakip.server.common.query.PeriodQueryWithParamsPreparator;
 
 public class PeriodDaoImpl implements PeriodDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	private PeriodQueryWithParamsPreparator queryWithParamsPreparator;
 
 	public void save(Period period) {
 		entityManager.persist(period);
@@ -28,6 +34,13 @@ public class PeriodDaoImpl implements PeriodDao {
 		
 		return findAllQuery.getResultList();
 	}
+	
+	public List<Period> queryPeriods(Long userId, PeriodQueryParamsWrapper queryParams) {
+		CriteriaQuery<Period> criteriaQuery = getQueryWithParamsPreparator().prepareQueryUsingParams(userId, queryParams);
+		TypedQuery<Period> query = entityManager.createQuery(criteriaQuery);
+		
+		return query.getResultList();
+	}
 
 	public Period update(Period detachedPeriod) {
 		Period attachedPeriod = entityManager.find(Period.class, detachedPeriod.getId());
@@ -38,6 +51,14 @@ public class PeriodDaoImpl implements PeriodDao {
 
 	public void delete(Period period) {
 		entityManager.remove(period);
+	}
+
+	public PeriodQueryWithParamsPreparator getQueryWithParamsPreparator() {
+		return queryWithParamsPreparator;
+	}
+
+	public void setQueryWithParamsPreparator(PeriodQueryWithParamsPreparator queryWithParamsPreparator) {
+		this.queryWithParamsPreparator = queryWithParamsPreparator;
 	}
 
 }
