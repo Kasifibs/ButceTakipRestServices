@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name="PERIOD")
 public class Period {
@@ -19,6 +21,9 @@ public class Period {
 	@GeneratedValue
 	@Column(name="ID")
 	private Long id;
+	
+	@Column(name="NAME")
+	private String name;
 	
 	@Column(name="BEGIN_DATE")
 	private Date beginDate;
@@ -29,6 +34,12 @@ public class Period {
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="USER_ID", referencedColumnName="user_id")
 	private User user;
+	
+	public void copy(Period otherPeriod){
+		this.name = otherPeriod.getName();
+		this.beginDate = otherPeriod.getBeginDate();
+		this.endDate = otherPeriod.getEndDate();
+	}
 	
 	public Long getId(){
 		return id;
@@ -57,9 +68,12 @@ public class Period {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	public void copy(Period otherPeriod){
-		this.beginDate = otherPeriod.getBeginDate();
-		this.endDate = otherPeriod.getEndDate();
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

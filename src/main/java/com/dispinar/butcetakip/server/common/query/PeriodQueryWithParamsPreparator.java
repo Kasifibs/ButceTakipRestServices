@@ -31,6 +31,10 @@ public class PeriodQueryWithParamsPreparator {
 		Predicate userCondition = criteriaBuilder.equal(user.get("id"), userId);
 		predicates.add(userCondition);
 		
+		if(queryParams.getName()!=null){
+			Predicate nameCondition = criteriaBuilder.like(period.<String>get("name"), "%"+queryParams.getName()+"%");
+			predicates.add(nameCondition);
+		}
 		if(queryParams.getMinBeginDate()!=null){
 			Predicate minBeginDateCondition = criteriaBuilder.greaterThanOrEqualTo(period.<Date>get("beginDate"), queryParams.getMinBeginDate());
 			predicates.add(minBeginDateCondition);

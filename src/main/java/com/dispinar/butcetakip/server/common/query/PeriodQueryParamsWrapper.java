@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class PeriodQueryParamsWrapper {
 	
+	private String name;
+	
 	@DateTimeFormat(pattern="dd.MM.yyyy")
 	private Date minBeginDate;
 	
@@ -50,6 +52,14 @@ public class PeriodQueryParamsWrapper {
 
 	public void setMaxEndDate(Date maxEndDate) {
 		this.maxEndDate = maxEndDate;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
