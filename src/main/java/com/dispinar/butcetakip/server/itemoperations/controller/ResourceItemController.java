@@ -39,7 +39,7 @@ public class ResourceItemController {
 		return resourceItemService.getAllResourceItems(username);
 	}
 	
-	@RequestMapping(value="/kalem/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResourceItem getResourceItem(@PathVariable("id") Long id){
 		return resourceItemService.getResourceItem(id);
 	}
