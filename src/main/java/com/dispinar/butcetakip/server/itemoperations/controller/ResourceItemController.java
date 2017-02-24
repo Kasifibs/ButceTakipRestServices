@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dispinar.butcetakip.server.common.entity.Period;
+import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
 import com.dispinar.butcetakip.server.itemoperations.entity.ResourceItem;
+import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryParamsWrapper;
 import com.dispinar.butcetakip.server.itemoperations.service.ResourceItemService;
 
 @RestController
@@ -37,6 +40,14 @@ public class ResourceItemController {
 	    String username = auth.getName();
 	      
 		return resourceItemService.getAllResourceItems(username);
+	}
+	
+	@RequestMapping(value="/sorgula", method=RequestMethod.GET)
+	public List<ResourceItem> queryResourceItems(ResourceItemQueryParamsWrapper queryParams){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	      
+		return resourceItemService.queryResourceItems(username, queryParams);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

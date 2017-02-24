@@ -5,13 +5,19 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.dispinar.butcetakip.server.itemoperations.entity.ResourceItem;
+import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryParamsWrapper;
+import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryWithParamsPreparator;
 
 public class ResourceItemDaoJpaImpl implements ResourceItemDao{
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	private ResourceItemQueryWithParamsPreparator queryWithParamsPreparator;
 	
 	public void save(ResourceItem resourceItem) {
 		entityManager.persist(resourceItem);
@@ -35,6 +41,13 @@ public class ResourceItemDaoJpaImpl implements ResourceItemDao{
 		
 		return findAllQuery.getResultList();
 	}
+	
+	public List<ResourceItem> queryResourceItems(Long userId, ResourceItemQueryParamsWrapper queryParams) {
+		CriteriaQuery<ResourceItem> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
+		TypedQuery<ResourceItem> query = entityManager.createQuery(criteriaQuery);
+		
+		return query.getResultList();
+	}
 
 	public ResourceItem update(ResourceItem detachedItem) {
 		ResourceItem attachedResourceItem = entityManager.find(ResourceItem.class, detachedItem.getId());
@@ -45,6 +58,14 @@ public class ResourceItemDaoJpaImpl implements ResourceItemDao{
 
 	public void delete(ResourceItem resourceItem) {
 		entityManager.remove(resourceItem);
+	}
+
+	public ResourceItemQueryWithParamsPreparator getQueryWithParamsPreparator() {
+		return queryWithParamsPreparator;
+	}
+
+	public void setQueryWithParamsPreparator(ResourceItemQueryWithParamsPreparator queryWithParamsPreparator) {
+		this.queryWithParamsPreparator = queryWithParamsPreparator;
 	}
 
 }

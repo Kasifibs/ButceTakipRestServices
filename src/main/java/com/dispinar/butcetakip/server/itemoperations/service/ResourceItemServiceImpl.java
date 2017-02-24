@@ -8,6 +8,7 @@ import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.itemoperations.entity.ResourceItem;
+import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryParamsWrapper;
 
 @Transactional
 public class ResourceItemServiceImpl implements ResourceItemService{
@@ -26,6 +27,12 @@ public class ResourceItemServiceImpl implements ResourceItemService{
 		User user = userService.getUserByUsername(username);
 		
 		return resourceItemDao.findAll(user.getId());
+	}
+	
+	public List<ResourceItem> queryResourceItems(String username, ResourceItemQueryParamsWrapper queryParams) {
+		User user = getUserService().getUserByUsername(username);
+		
+		return resourceItemDao.queryResourceItems(user.getId(), queryParams);
 	}
 	
 	public ResourceItem getResourceItem(Long id) {		
