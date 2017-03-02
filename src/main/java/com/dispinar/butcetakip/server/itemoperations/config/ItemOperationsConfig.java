@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.dispinar.butcetakip.server.common.query.PeriodQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.ExpenseItemDao;
 import com.dispinar.butcetakip.server.itemoperations.dao.ExpenseItemDaoJpaImpl;
@@ -15,6 +14,7 @@ import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDao;
 import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.itemoperations.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.itemoperations.dao.ResourceItemDaoJpaImpl;
+import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.itemoperations.service.ExpenseItemService;
 import com.dispinar.butcetakip.server.itemoperations.service.ExpenseItemServiceImpl;
@@ -56,6 +56,7 @@ public class ItemOperationsConfig {
 	@Bean
 	public IncomeItemDao incomeItemDao(){
 		IncomeItemDaoJpaImpl incomeItemDao = new IncomeItemDaoJpaImpl();
+		incomeItemDao.setQueryWithParamsPreparator(incItemQueryWithParamsPreparator());
 		return incomeItemDao;
 	}
 	
@@ -66,6 +67,12 @@ public class ItemOperationsConfig {
 		incomeItemService.setUserService(userService);
 		
 		return incomeItemService;
+	}
+	
+	@Bean
+	public IncomeItemQueryWithParamsPreparator incItemQueryWithParamsPreparator(){
+		IncomeItemQueryWithParamsPreparator queryWithParamsPreparator = new IncomeItemQueryWithParamsPreparator();
+		return queryWithParamsPreparator;
 	}
 	
 	@Bean

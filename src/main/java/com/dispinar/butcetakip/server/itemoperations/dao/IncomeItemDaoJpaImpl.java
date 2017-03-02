@@ -5,13 +5,19 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.dispinar.butcetakip.server.itemoperations.entity.IncomeItem;
+import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryParamsWrapper;
+import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryWithParamsPreparator;
 
 public class IncomeItemDaoJpaImpl implements IncomeItemDao
 {
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	private IncomeItemQueryWithParamsPreparator queryWithParamsPreparator;
 
 	public void save(IncomeItem incomeItem) {
 		entityManager.persist(incomeItem);
@@ -35,6 +41,13 @@ public class IncomeItemDaoJpaImpl implements IncomeItemDao
 		
 		return findAllQuery.getResultList();
 	}
+	
+	public List<IncomeItem> queryIncomeItems(Long userId, IncomeItemQueryParamsWrapper queryParams) {
+		CriteriaQuery<IncomeItem> criteriaQuery = getQueryWithParamsPreparator().prepareQueryUsingParams(userId, queryParams);
+		TypedQuery<IncomeItem> query = entityManager.createQuery(criteriaQuery);
+		
+		return query.getResultList();
+	}
 
 	public IncomeItem update(IncomeItem detachedIncomeItem) {
 		IncomeItem attachedIncomeItem = entityManager.find(IncomeItem.class, detachedIncomeItem.getId());
@@ -45,6 +58,14 @@ public class IncomeItemDaoJpaImpl implements IncomeItemDao
 
 	public void delete(IncomeItem incomeItem) {
 		entityManager.remove(incomeItem);
+	}
+
+	public IncomeItemQueryWithParamsPreparator getQueryWithParamsPreparator() {
+		return queryWithParamsPreparator;
+	}
+
+	public void setQueryWithParamsPreparator(IncomeItemQueryWithParamsPreparator queryWithParamsPreparator) {
+		this.queryWithParamsPreparator = queryWithParamsPreparator;
 	}
 
 }

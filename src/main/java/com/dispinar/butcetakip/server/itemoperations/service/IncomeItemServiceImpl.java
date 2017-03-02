@@ -8,6 +8,7 @@ import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDao;
 import com.dispinar.butcetakip.server.itemoperations.entity.IncomeItem;
+import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryParamsWrapper;
 
 @Transactional 
 public class IncomeItemServiceImpl implements IncomeItemService{
@@ -26,6 +27,12 @@ public class IncomeItemServiceImpl implements IncomeItemService{
 		User user = userService.getUserByUsername(username);
 		
 		return incomeItemDao.findAll(user.getId());
+	}
+	
+	public List<IncomeItem> queryIncomeItems(String username, IncomeItemQueryParamsWrapper queryParamsWrapper) {
+		User user = getUserService().getUserByUsername(username);
+		
+		return incomeItemDao.queryIncomeItems(user.getId(), queryParamsWrapper);
 	}
 
 	public IncomeItem getIncomeItem(Long id) {
