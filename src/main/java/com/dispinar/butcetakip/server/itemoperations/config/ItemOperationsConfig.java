@@ -14,6 +14,7 @@ import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDao;
 import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDaoJpaImpl;
 import com.dispinar.butcetakip.server.itemoperations.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.itemoperations.dao.ResourceItemDaoJpaImpl;
+import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.itemoperations.service.ExpenseItemService;
@@ -78,6 +79,7 @@ public class ItemOperationsConfig {
 	@Bean
 	public ExpenseItemDao expenseItemDao(){
 		ExpenseItemDaoJpaImpl expenseItemDao = new ExpenseItemDaoJpaImpl();
+		expenseItemDao.setQueryWithParamsPreparator(expenItemQueryWithParamsPreparator());
 		return expenseItemDao;
 	}
 	
@@ -88,5 +90,11 @@ public class ItemOperationsConfig {
 		expenseItemService.setUserService(userService);
 		
 		return expenseItemService;
+	}
+	
+	@Bean
+	public ExpenseItemQueryWithParamsPreparator expenItemQueryWithParamsPreparator(){
+		ExpenseItemQueryWithParamsPreparator queryWithParamsPreparator = new ExpenseItemQueryWithParamsPreparator();
+		return queryWithParamsPreparator;
 	}
 }

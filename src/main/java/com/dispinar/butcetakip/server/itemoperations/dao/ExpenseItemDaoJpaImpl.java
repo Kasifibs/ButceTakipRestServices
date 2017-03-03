@@ -5,13 +5,19 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.dispinar.butcetakip.server.itemoperations.entity.ExpenseItem;
+import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryParamsWrapper;
+import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryWithParamsPreparator;
 
 public class ExpenseItemDaoJpaImpl implements ExpenseItemDao{
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	private ExpenseItemQueryWithParamsPreparator queryWithParamsPreparator;
 	
 	public void save(ExpenseItem expenseItem) {
 		entityManager.persist(expenseItem);
@@ -35,6 +41,13 @@ public class ExpenseItemDaoJpaImpl implements ExpenseItemDao{
 
 		return findAllQuery.getResultList();
 	}
+	
+	public List<ExpenseItem> queryExpenseItems(Long userId, ExpenseItemQueryParamsWrapper queryParams) {
+		CriteriaQuery<ExpenseItem> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
+		TypedQuery<ExpenseItem> query = entityManager.createQuery(criteriaQuery);
+		
+		return query.getResultList();
+	}
 
 	public ExpenseItem update(ExpenseItem detachedExpenseItem) {
 		ExpenseItem attachedExpenseItem = entityManager.find(ExpenseItem.class, detachedExpenseItem.getId());
@@ -46,5 +59,14 @@ public class ExpenseItemDaoJpaImpl implements ExpenseItemDao{
 	public void delete(ExpenseItem expenseItem) {
 		entityManager.remove(expenseItem);
 	}
+
+	public ExpenseItemQueryWithParamsPreparator getQueryWithParamsPreparator() {
+		return queryWithParamsPreparator;
+	}
+
+	public void setQueryWithParamsPreparator(ExpenseItemQueryWithParamsPreparator queryWithParamsPreparator) {
+		this.queryWithParamsPreparator = queryWithParamsPreparator;
+	}
+
 
 }

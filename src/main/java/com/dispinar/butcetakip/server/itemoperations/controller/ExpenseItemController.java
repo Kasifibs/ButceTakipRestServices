@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dispinar.butcetakip.server.itemoperations.entity.ExpenseItem;
+import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryParamsWrapper;
 import com.dispinar.butcetakip.server.itemoperations.service.ExpenseItemService;
 
 @RestController
@@ -37,6 +38,14 @@ public class ExpenseItemController {
 	    String username = auth.getName();
 	      
 		return expenseItemService.getAllExpenseItems(username);
+	}
+	
+	@RequestMapping(value="/sorgula", method=RequestMethod.GET)
+	public List<ExpenseItem> queryResourceItems(ExpenseItemQueryParamsWrapper queryParams){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	      
+		return expenseItemService.queryExpenseItems(username, queryParams);
 	}
 	
 	@RequestMapping(value="/kalem/{id}", method=RequestMethod.GET)

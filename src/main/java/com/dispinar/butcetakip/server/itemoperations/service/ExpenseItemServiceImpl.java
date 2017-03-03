@@ -8,6 +8,7 @@ import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.ExpenseItemDao;
 import com.dispinar.butcetakip.server.itemoperations.entity.ExpenseItem;
+import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryParamsWrapper;
 
 @Transactional
 public class ExpenseItemServiceImpl implements ExpenseItemService{
@@ -26,6 +27,12 @@ public class ExpenseItemServiceImpl implements ExpenseItemService{
 		User user = userService.getUserByUsername(username);
 		
 		return expenseItemDao.findAll(user.getId());
+	}
+	
+	public List<ExpenseItem> queryExpenseItems(String username, ExpenseItemQueryParamsWrapper queryParamsWrapper) {
+		User user = getUserService().getUserByUsername(username);
+		
+		return expenseItemDao.queryExpenseItems(user.getId(), queryParamsWrapper);
 	}
 
 	public ExpenseItem getExpenseItem(Long id) {
