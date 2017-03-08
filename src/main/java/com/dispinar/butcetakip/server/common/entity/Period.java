@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="PERIOD")
@@ -31,7 +31,8 @@ public class Period {
 	@Column(name="END_DATE")
 	private Date endDate;
 	
-	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JsonIgnore
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="USER_ID", referencedColumnName="user_id")
 	private User user;
 	

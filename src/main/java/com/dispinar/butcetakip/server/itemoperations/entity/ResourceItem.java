@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.dispinar.butcetakip.server.common.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="RESOURCE_ITEM")
@@ -23,10 +24,11 @@ public class ResourceItem {
 	@Column(name="NAME")
 	private String name;
 	
-	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JsonIgnore
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="USER_ID", referencedColumnName="user_id")
 	private User user;
-	
+
 	public Long getId(){
 		return id;
 	}

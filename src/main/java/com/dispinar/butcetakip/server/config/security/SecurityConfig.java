@@ -45,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .anyRequest().authenticated()
         .and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
-        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-        .and().requiresChannel().anyRequest().requiresSecure();
+        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+       // .and().requiresChannel().anyRequest().requiresSecure();
     }
 	
 	 @Bean

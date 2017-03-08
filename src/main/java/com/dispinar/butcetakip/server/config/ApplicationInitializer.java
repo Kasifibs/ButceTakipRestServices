@@ -4,6 +4,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import com.dispinar.butcetakip.server.common.config.CommonConfig;
 import com.dispinar.butcetakip.server.config.security.SecurityConfig;
+import com.dispinar.butcetakip.server.iteminstances.config.ItemInstancesConfig;
 import com.dispinar.butcetakip.server.itemoperations.config.ItemOperationsConfig;
 
 public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -15,7 +16,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] {AppConfig.class, ItemOperationsConfig.class, CommonConfig.class};
+		return new Class[] {AppConfig.class, AvoidJacksonSerializationOnNonFethedLazyObjectsConfig.class, ItemOperationsConfig.class, ItemInstancesConfig.class, CommonConfig.class};
 	}
 
 	@Override
