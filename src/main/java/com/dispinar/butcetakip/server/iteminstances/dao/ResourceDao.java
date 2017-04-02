@@ -1,8 +1,9 @@
 package com.dispinar.butcetakip.server.iteminstances.dao;
 
-import java.util.List;
-
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
+import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryParamsWrapper;
+
+import java.util.List;
 
 public interface ResourceDao {
 	
@@ -12,7 +13,7 @@ public interface ResourceDao {
 	
 	public List<Resource> findAll(Long userId);
 	
-	//public List<Resource> queryResources(Long userId, ResourceItemQueryParamsWrapper queryParams);
+	public List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams);
 	
 	public Resource update(Resource resource);
 	

@@ -8,6 +8,7 @@ import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.iteminstances.dao.ResourceDao;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
+import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryParamsWrapper;
 
 @Transactional
 public class ResourceServiceImpl implements ResourceService{
@@ -27,6 +28,12 @@ public class ResourceServiceImpl implements ResourceService{
 		User user = userService.getUserByUsername(username);
 		
 		return resourceDao.findAll(user.getId());
+	}
+
+	public List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper) {
+		User user = getUserService().getUserByUsername(username);
+
+		return resourceDao.queryResources(user.getId(), queryParamsWrapper);
 	}
 
 	public Resource getResource(Long id) {
