@@ -31,7 +31,9 @@ public class ResourceServiceImpl implements ResourceService{
 	}
 
 	public List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper) {
-		return null;
+		User user = getUserService().getUserByUsername(username);
+
+		return resourceDao.queryResources(user.getId(), queryParamsWrapper);
 	}
 
 	public Resource getResource(Long id) {

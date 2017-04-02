@@ -5,13 +5,20 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
+import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryParamsWrapper;
+import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryWithParamsPreparator;
+
 
 public class ResourceDaoJpaImpl implements ResourceDao{
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	private ResourceQueryWithParamsPreparator queryWithParamsPreparator;
 	
 	public void save(Resource resource) {
 		entityManager.persist(resource);
@@ -30,6 +37,13 @@ public class ResourceDaoJpaImpl implements ResourceDao{
 		
 	}
 
+	public List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams) {
+		CriteriaQuery<Resource> resourceQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
+		TypedQuery<Resource>  query = entityManager.createQuery(resourceQuery);
+
+		return query.getResultList();
+	}
+
 	public Resource update(Resource detachedResource) {
 		Resource attachedResource = entityManager.find(Resource.class, detachedResource.getId());
 		attachedResource.copy(detachedResource);
@@ -41,4 +55,7 @@ public class ResourceDaoJpaImpl implements ResourceDao{
 		entityManager.remove(resource);
 	}
 
+	public void setQueryWithParamsPreparator(ResourceQueryWithParamsPreparator queryWithParamsPreparator) {
+		this.queryWithParamsPreparator = queryWithParamsPreparator;
+	}
 }
