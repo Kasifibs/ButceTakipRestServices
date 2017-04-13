@@ -7,16 +7,16 @@ import java.util.List;
 
 public interface ResourceDao {
 	
-	public void save(Resource resource);
+	void save(Resource resource);
 
-	public Resource findById(Long id);
+	Resource findById(Long id);
 	
-	public List<Resource> findAll(Long userId);
+	List<Resource> findAll(Long userId);
 	
-	public List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams);
+	List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams);
 	
-	public Resource update(Resource resource);
+	Resource update(Resource resource);
 	
-	public void delete(Resource resource);
+	void delete(Resource resource);
 
 }

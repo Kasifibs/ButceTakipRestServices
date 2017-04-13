@@ -2,13 +2,14 @@ package com.dispinar.butcetakip.server.itemoperations.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
+
 
 import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.ResourceItemDao;
 import com.dispinar.butcetakip.server.itemoperations.entity.ResourceItem;
 import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryParamsWrapper;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class ResourceItemServiceImpl implements ResourceItemService{

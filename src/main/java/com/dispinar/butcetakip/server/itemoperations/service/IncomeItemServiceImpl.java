@@ -2,15 +2,15 @@ package com.dispinar.butcetakip.server.itemoperations.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDao;
 import com.dispinar.butcetakip.server.itemoperations.entity.IncomeItem;
 import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryParamsWrapper;
+import org.springframework.transaction.annotation.Transactional;
 
-@Transactional 
+@Transactional
 public class IncomeItemServiceImpl implements IncomeItemService{
 
 	private IncomeItemDao incomeItemDao;

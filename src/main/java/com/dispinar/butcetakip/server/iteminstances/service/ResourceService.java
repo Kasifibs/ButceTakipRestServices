@@ -7,16 +7,16 @@ import java.util.List;
 
 public interface ResourceService {
 	
-	public void saveResource(Resource resource, String username);
+	void saveResource(Resource resource, String username);
 	
-	public List<Resource> getAllResources(String username);
+	List<Resource> getAllResources(String username);
 	
-	public List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper);
+	List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper);
 	
-	public Resource getResource(Long id);
+	Resource getResource(Long id);
 	
-	public Resource updateResource(Resource resource);
+	Resource updateResource(Resource resource);
 	
-	public void deleteResource(Long id);
+	void deleteResource(Long id);
 
 }
