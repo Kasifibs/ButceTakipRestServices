@@ -3,11 +3,11 @@ package com.dispinar.butcetakip.server.iteminstances.query;
 import java.math.BigDecimal;
 
 /**
- * Created by Tolga on 13.04.2017.
+ * Created by Tolga on 16.04.2017.
  */
-public class IncomeQueryParamsWrapper {
+public class ExpenseQueryParamsWrapper {
 
-    private Long incomeItemId;
+    private Long expenseItemId;
 
     private Long periodId;
 
@@ -15,12 +15,12 @@ public class IncomeQueryParamsWrapper {
 
     private BigDecimal maxAmount;
 
-    public Long getIncomeItemId() {
-        return incomeItemId;
+    public Long getExpenseItemId() {
+        return expenseItemId;
     }
 
-    public void setIncomeItemId(Long incomeItemId) {
-        this.incomeItemId = incomeItemId;
+    public void setExpenseItemId(Long expenseItemId) {
+        this.expenseItemId = expenseItemId;
     }
 
     public Long getPeriodId() {

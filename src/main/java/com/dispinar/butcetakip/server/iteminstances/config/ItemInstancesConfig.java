@@ -1,16 +1,11 @@
 package com.dispinar.butcetakip.server.iteminstances.config;
 
 import com.dispinar.butcetakip.server.common.service.UserService;
-import com.dispinar.butcetakip.server.iteminstances.dao.IncomeDao;
-import com.dispinar.butcetakip.server.iteminstances.dao.IncomeDaoImpl;
-import com.dispinar.butcetakip.server.iteminstances.dao.ResourceDao;
-import com.dispinar.butcetakip.server.iteminstances.dao.ResourceDaoJpaImpl;
+import com.dispinar.butcetakip.server.iteminstances.dao.*;
+import com.dispinar.butcetakip.server.iteminstances.query.ExpenseQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.iteminstances.query.IncomeQueryWithParamsPreparator;
 import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryWithParamsPreparator;
-import com.dispinar.butcetakip.server.iteminstances.service.IncomeService;
-import com.dispinar.butcetakip.server.iteminstances.service.IncomeServiceImpl;
-import com.dispinar.butcetakip.server.iteminstances.service.ResourceService;
-import com.dispinar.butcetakip.server.iteminstances.service.ResourceServiceImpl;
+import com.dispinar.butcetakip.server.iteminstances.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -69,6 +64,29 @@ public class ItemInstancesConfig {
 	public IncomeQueryWithParamsPreparator incomeQueryWithParamsPreparator(){
 		IncomeQueryWithParamsPreparator queryWithParamsPreparator = new IncomeQueryWithParamsPreparator();
 		return queryWithParamsPreparator;
+	}
+
+	@Bean
+	public ExpenseQueryWithParamsPreparator expenseQueryWithParamsPreparator(){
+		ExpenseQueryWithParamsPreparator queryWithParamsPreparator = new ExpenseQueryWithParamsPreparator();
+		return queryWithParamsPreparator;
+	}
+
+	@Bean
+	public ExpenseDao expenseDao(){
+		ExpenseDaoImpl expenseDao = new ExpenseDaoImpl();
+		expenseDao.setQueryWithParamsPreparator(expenseQueryWithParamsPreparator());
+
+		return expenseDao;
+	}
+
+	@Bean
+	public ExpenseService expenseService(){
+		ExpenseServiceImpl expenseService = new ExpenseServiceImpl();
+		expenseService.setExpenseDao(expenseDao());
+		expenseService.setUserService(userService);
+
+		return expenseService;
 	}
 
 }
