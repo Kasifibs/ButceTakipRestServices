@@ -27,8 +27,8 @@ public class AppConfig {
 	@Bean
 	public DataSource dataSource(){
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/BUTCE_TAKIP");
+		dataSource.setDriverClassName("org.postgresql.Driver");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/butce_takip");
 		dataSource.setUsername("butceTakipApp");
 		dataSource.setPassword("pec24hed");
 		
