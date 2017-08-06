@@ -57,7 +57,7 @@ CREATE TABLE resource (
   user_id integer NOT NULL,
   res_item_id integer NOT NULL,
   period_id integer NOT NULL,
-  amont decimal(13,2) NOT NULL,
+  amount decimal(13,2) NOT NULL,
   CONSTRAINT fk_resource_period FOREIGN KEY (period_id) REFERENCES period(id),
   CONSTRAINT fk_resource_resource_item FOREIGN KEY (res_item_id) REFERENCES resource_item(id),
   CONSTRAINT fk_resource_users FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -68,7 +68,7 @@ CREATE TABLE income (
   user_id integer NOT NULL,
   income_item_id integer NOT NULL,
   period_id integer NOT NULL,
-  amont decimal(13,2) NOT NULL,
+  amount decimal(13,2) NOT NULL,
   CONSTRAINT fk_income_period FOREIGN KEY (period_id) REFERENCES period(id),
   CONSTRAINT fk_income_resource_item FOREIGN KEY (income_item_id) REFERENCES income_item(id),
   CONSTRAINT fk_income_users FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -80,8 +80,10 @@ CREATE TABLE expense (
   user_id integer NOT NULL,
   expense_item_id integer NOT NULL,
   period_id integer NOT NULL,
-  amont decimal(13,2) NOT NULL,
+  amount decimal(13,2) NOT NULL,
   CONSTRAINT fk_expense_period FOREIGN KEY (period_id) REFERENCES period(id),
   CONSTRAINT fk_expense_resource_item FOREIGN KEY (expense_item_id) REFERENCES expense_item(id),
   CONSTRAINT fk_expense_users FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+ALTER TABLE period ADD COLUMN begin_amount decimal(13,2) NOT NULL;

@@ -1,5 +1,6 @@
 package com.dispinar.butcetakip.server.common.entity;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -30,6 +31,9 @@ public class Period {
 	
 	@Column(name="END_DATE")
 	private Date endDate;
+
+	@Column ( name="BEGIN_AMOUNT", precision = 13, scale = 2 )
+	private BigDecimal beginAmount;
 	
 	@JsonIgnore
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
@@ -40,6 +44,7 @@ public class Period {
 		this.name = otherPeriod.getName();
 		this.beginDate = otherPeriod.getBeginDate();
 		this.endDate = otherPeriod.getEndDate();
+		this.beginAmount = otherPeriod.getBeginAmount();
 	}
 	
 	public Long getId(){
@@ -76,5 +81,13 @@ public class Period {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public BigDecimal getBeginAmount() {
+		return beginAmount;
+	}
+
+	public void setBeginAmount(BigDecimal beginAmount) {
+		this.beginAmount = beginAmount;
 	}
 }
