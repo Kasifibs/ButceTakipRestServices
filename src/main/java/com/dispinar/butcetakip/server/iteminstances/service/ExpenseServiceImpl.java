@@ -34,6 +34,12 @@ public class ExpenseServiceImpl implements  ExpenseService {
         return expenseDao.findAll(user.getId());
     }
 
+    public List<Expense> getAllExpensesByPeriod(String username, Long periodId) {
+        User user = userService.getUserByUsername(username);
+
+        return expenseDao.findAllByPeriodId(user.getId(), periodId);
+    }
+
     public List<Expense> queryExpenses(String username, ExpenseQueryParamsWrapper queryParamsWrapper) {
         User user = userService.getUserByUsername(username);
 

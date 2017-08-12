@@ -1,12 +1,17 @@
 package com.dispinar.butcetakip.server.iteminstances.dao;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
 import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryParamsWrapper;
@@ -35,6 +40,21 @@ public class ResourceDaoJpaImpl implements ResourceDao{
 
 		return findAllQuery.getResultList();
 		
+	}
+
+	public List<Resource> findAllByPeriod(Long userId, Long periodId) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Resource> criteriaQuery = criteriaBuilder.createQuery(Resource.class);
+		Root<Resource> res = criteriaQuery.from(Resource.class);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        Predicate userCondition = criteriaBuilder.equal(res.get("user").get("id"), userId);
+        Predicate periodCondition = criteriaBuilder.equal(res.get("period").get("id"), periodId);
+        predicates.addAll(Arrays.asList(userCondition, periodCondition));
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<Resource> query = entityManager.createQuery(criteriaQuery);
+		return query.getResultList();
 	}
 
 	public List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams) {

@@ -31,6 +31,12 @@ public class ResourceServiceImpl implements ResourceService{
 		return resourceDao.findAll(user.getId());
 	}
 
+	public List<Resource> getAllResourcesByPeriod(String username, Long periodId) {
+		User user = userService.getUserByUsername(username);
+
+		return resourceDao.findAllByPeriod(user.getId(), periodId);
+	}
+
 	public List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper) {
 		User user = getUserService().getUserByUsername(username);
 

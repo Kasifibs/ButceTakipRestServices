@@ -12,6 +12,8 @@ public interface ResourceDao {
 	Resource findById(Long id);
 	
 	List<Resource> findAll(Long userId);
+
+	List<Resource> findAllByPeriod(Long userId, Long periodId);
 	
 	List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams);
 	

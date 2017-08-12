@@ -34,6 +34,12 @@ public class IncomeServiceImpl implements IncomeService {
         return incomeDao.findAll(user.getId());
     }
 
+    public List<Income> getAllIncomesByPeriodId(String username, Long periodId) {
+        User user = userService.getUserByUsername(username);
+
+        return incomeDao.findAllByPeriodId(user.getId(), periodId);
+    }
+
     public List<Income> queryIncomes(String username, IncomeQueryParamsWrapper queryParamsWrapper) {
         User user = userService.getUserByUsername(username);
 

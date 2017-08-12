@@ -10,6 +10,8 @@ public interface ResourceService {
 	void saveResource(Resource resource, String username);
 	
 	List<Resource> getAllResources(String username);
+
+	List<Resource> getAllResourcesByPeriod(String username, Long periodId);
 	
 	List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper);
 	

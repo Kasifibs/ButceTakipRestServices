@@ -54,7 +54,7 @@ public class ItemInstancesConfig {
 
 	@Bean
 	public IncomeDao incomeDao(){
-		IncomeDaoImpl incomeDao = new IncomeDaoImpl();
+		IncomeDaoJpaImpl incomeDao = new IncomeDaoJpaImpl();
 		incomeDao.setQueryWithParamsPreparator(incomeQueryWithParamsPreparator());
 
 		return incomeDao;
@@ -74,7 +74,7 @@ public class ItemInstancesConfig {
 
 	@Bean
 	public ExpenseDao expenseDao(){
-		ExpenseDaoImpl expenseDao = new ExpenseDaoImpl();
+		ExpenseDaoJpaImpl expenseDao = new ExpenseDaoJpaImpl();
 		expenseDao.setQueryWithParamsPreparator(expenseQueryWithParamsPreparator());
 
 		return expenseDao;

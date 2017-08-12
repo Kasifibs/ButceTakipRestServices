@@ -16,6 +16,8 @@ public interface ExpenseDao {
 
     List<Expense> findAll(Long userId);
 
+    List<Expense> findAllByPeriodId(Long userId, Long periodId);
+
     List<Expense> queryExpenses(Long userId, ExpenseQueryParamsWrapper queryParams);
 
     Expense update(Expense expense);

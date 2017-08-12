@@ -9,13 +9,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Tolga on 17.04.2017.
  */
-public class ExpenseDaoImpl implements  ExpenseDao {
+public class ExpenseDaoJpaImpl implements  ExpenseDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -35,6 +40,21 @@ public class ExpenseDaoImpl implements  ExpenseDao {
                 .setParameter("userId", userId);
 
         return findAllQuery.getResultList();
+    }
+
+    public List<Expense> findAllByPeriodId(Long userId, Long periodId) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Expense> criteriaQuery = criteriaBuilder.createQuery(Expense.class);
+        Root<Expense> exp = criteriaQuery.from(Expense.class);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        Predicate userCondition = criteriaBuilder.equal(exp.get("user").get("id"), userId);
+        Predicate periodCondition = criteriaBuilder.equal(exp.get("period").get("id"), periodId);
+        predicates.addAll(Arrays.asList(userCondition, periodCondition));
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<Expense> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 
     public List<Expense> queryExpenses(Long userId, ExpenseQueryParamsWrapper queryParams) {

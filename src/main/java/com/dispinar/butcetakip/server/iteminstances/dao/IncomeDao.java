@@ -19,6 +19,8 @@ public interface IncomeDao {
 
     List<Income> findAll(Long userId);
 
+    List<Income> findAllByPeriodId(Long userId, Long periodId);
+
     List<Income> queryIncomes(Long userId, IncomeQueryParamsWrapper queryParams);
 
     Income update(Income income);

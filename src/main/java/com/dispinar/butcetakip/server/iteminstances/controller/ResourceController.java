@@ -35,6 +35,14 @@ public class ResourceController {
 		return resourceService.getAllResources(username);
 	}
 
+	@RequestMapping(value="/donemeGoreGetir", method=RequestMethod.GET)
+	public List<Resource> getAllResourcesByPeriod(Long periodId){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+
+		return resourceService.getAllResourcesByPeriod(username, periodId);
+	}
+
     @RequestMapping(value="/sorgula", method=RequestMethod.GET)
     public List<Resource> queryResources(ResourceQueryParamsWrapper queryParams){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

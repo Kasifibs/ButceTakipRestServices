@@ -17,6 +17,8 @@ public interface ExpenseService {
 
     List<Expense> getAllExpenses(String username);
 
+    List<Expense> getAllExpensesByPeriod(String username, Long periodId);
+
     List<Expense> queryExpenses(String username, ExpenseQueryParamsWrapper queryParamsWrapper);
 
     Expense getExpense(Long id);

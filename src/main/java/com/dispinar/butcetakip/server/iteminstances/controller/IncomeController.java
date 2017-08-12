@@ -38,6 +38,14 @@ public class IncomeController {
         return incomeService.getAllIncomes(username);
     }
 
+    @RequestMapping(value="/donemeGoreGetir", method=RequestMethod.GET)
+    public List<Income> getAllIncomesByPeriod(Long periodId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        return incomeService.getAllIncomesByPeriodId(username, periodId);
+    }
+
     @RequestMapping(value="/sorgula", method=RequestMethod.GET)
     public List<Income> queryIncomes(IncomeQueryParamsWrapper queryParamsWrapper){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

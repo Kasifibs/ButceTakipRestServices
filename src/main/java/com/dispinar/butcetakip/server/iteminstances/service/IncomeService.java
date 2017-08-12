@@ -14,6 +14,8 @@ public interface IncomeService {
 
     List<Income> getAllIncomes(String username);
 
+    List<Income> getAllIncomesByPeriodId(String username, Long periodId);
+
     List<Income> queryIncomes(String username, IncomeQueryParamsWrapper queryParamsWrapper);
 
     Income getIncome(Long id);
