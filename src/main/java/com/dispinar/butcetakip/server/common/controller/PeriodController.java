@@ -2,6 +2,8 @@ package com.dispinar.butcetakip.server.common.controller;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodResourcesInformationDTO;
+import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,4 +67,12 @@ public class PeriodController {
 
 		return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
 	}
+
+    @RequestMapping(value="/donemVarlikBilgisiniGetir", method=RequestMethod.GET)
+    public PeriodResourcesInformationDTO getPeriodResourcesInformation(Long periodId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        return periodService.preparePeriodResourcesInformation(username, periodId);
+    }
 }

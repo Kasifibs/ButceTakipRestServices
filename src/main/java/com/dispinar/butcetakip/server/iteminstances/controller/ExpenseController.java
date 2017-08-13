@@ -40,14 +40,6 @@ public class ExpenseController {
         return expenseService.getAllExpenses(username);
     }
 
-    @RequestMapping(value="/donemeGoreGetir", method=RequestMethod.GET)
-    public List<Expense> getAllExpensesByPeriod(Long periodId){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        return expenseService.getAllExpensesByPeriod(username, periodId);
-    }
-
     @RequestMapping(value="/sorgula", method=RequestMethod.GET)
     public List<Expense> queryExpenses(ExpenseQueryParamsWrapper queryParamsWrapper){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
