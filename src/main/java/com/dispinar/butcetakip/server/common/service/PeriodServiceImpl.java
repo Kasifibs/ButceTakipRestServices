@@ -5,12 +5,18 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodExpensesInformationDTO;
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodIncomesInformationDTO;
 import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodResourcesInformationDTO;
 import com.dispinar.butcetakip.server.common.dao.PeriodDao;
 import com.dispinar.butcetakip.server.common.entity.Period;
 import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
+import com.dispinar.butcetakip.server.iteminstances.entity.Expense;
+import com.dispinar.butcetakip.server.iteminstances.entity.Income;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
+import com.dispinar.butcetakip.server.iteminstances.service.ExpenseService;
+import com.dispinar.butcetakip.server.iteminstances.service.IncomeService;
 import com.dispinar.butcetakip.server.iteminstances.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +29,12 @@ public class PeriodServiceImpl implements PeriodService{
 
 	@Autowired
 	private ResourceService resourceService;
+
+	@Autowired
+    private IncomeService incomeService;
+
+	@Autowired
+    private ExpenseService expenseService;
 	
 	public void savePeriod(Period period, String username) {
 		User user = getUserService().getUserByUsername(username);
@@ -65,6 +77,32 @@ public class PeriodServiceImpl implements PeriodService{
         }
 
         return new PeriodResourcesInformationDTO(periodResourcesList, beginAmount, endAmount);
+    }
+
+    public PeriodIncomesInformationDTO preparePeriodIncomesInformation(String username, Long periodId) {
+        List<Income> periodIncomesList = incomeService.getAllIncomesByPeriodId(username, periodId);
+        BigDecimal totalAmount = new BigDecimal("0");
+        for (Income income : periodIncomesList) {
+            totalAmount = totalAmount.add(income.getAmount());
+        }
+
+        return new PeriodIncomesInformationDTO(periodIncomesList, totalAmount);
+    }
+
+    public PeriodExpensesInformationDTO preparePeriodExpensesInformation(String username, Long periodId) {
+        PeriodResourcesInformationDTO periodResourcesInformationDTO = this.preparePeriodResourcesInformation(username, periodId);
+        PeriodIncomesInformationDTO periodIncomesInformationDTO = this.preparePeriodIncomesInformation(username, periodId);
+
+        BigDecimal totalExpense = new BigDecimal(periodIncomesInformationDTO.getPeriodTotalIncomes()).subtract(new BigDecimal(periodResourcesInformationDTO.getPeriodResult()));
+
+        List<Expense> periodExpensesList = expenseService.getAllExpensesByPeriod(username, periodId);
+        BigDecimal totalKnownExpenses = new BigDecimal("0");
+        for (Expense expense : periodExpensesList) {
+            totalKnownExpenses = totalKnownExpenses.add(expense.getAmount());
+        }
+
+        return new PeriodExpensesInformationDTO(periodExpensesList, periodResourcesInformationDTO.getPeriodResult(), periodIncomesInformationDTO.getPeriodTotalIncomes(), totalExpense.toPlainString(), totalKnownExpenses.toPlainString());
+
     }
 
     public PeriodDao getPeriodDao() {

@@ -2,6 +2,8 @@ package com.dispinar.butcetakip.server.common.controller;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodExpensesInformationDTO;
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodIncomesInformationDTO;
 import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodResourcesInformationDTO;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +76,21 @@ public class PeriodController {
         String username = auth.getName();
 
         return periodService.preparePeriodResourcesInformation(username, periodId);
+    }
+
+    @RequestMapping(value="/donemGelirBilgisiniGetir", method=RequestMethod.GET)
+    public PeriodIncomesInformationDTO getPeriodIncomesInformation(Long periodId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        return periodService.preparePeriodIncomesInformation(username, periodId);
+    }
+
+    @RequestMapping(value="/donemGiderBilgisiniGetir", method=RequestMethod.GET)
+    public PeriodExpensesInformationDTO getPeriodExpensesInformation(Long periodId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        return periodService.preparePeriodExpensesInformation(username, periodId);
     }
 }

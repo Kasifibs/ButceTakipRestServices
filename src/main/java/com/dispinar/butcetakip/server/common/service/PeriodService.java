@@ -2,6 +2,8 @@ package com.dispinar.butcetakip.server.common.service;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodExpensesInformationDTO;
+import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodIncomesInformationDTO;
 import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodResourcesInformationDTO;
 import com.dispinar.butcetakip.server.common.entity.Period;
 import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
@@ -21,4 +23,8 @@ public interface PeriodService {
 	void deletePeriod(Long id);
 
     PeriodResourcesInformationDTO preparePeriodResourcesInformation(String username, Long periodId);
+
+    PeriodIncomesInformationDTO preparePeriodIncomesInformation(String username, Long periodId);
+
+    PeriodExpensesInformationDTO preparePeriodExpensesInformation(String username, Long periodId);
 }
