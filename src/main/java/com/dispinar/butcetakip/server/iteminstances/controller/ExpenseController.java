@@ -48,7 +48,7 @@ public class ExpenseController {
         return expenseService.queryExpenses(username, queryParamsWrapper);
     }
 
-    @RequestMapping(value="/gelir/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/gider/{id}", method=RequestMethod.GET)
     public Expense getExpense(@PathVariable("id") Long id){
         return expenseService.getExpense(id);
     }
