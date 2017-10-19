@@ -1,17 +1,13 @@
 package com.dispinar.butcetakip.server.common.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="USER_ROLES")
 public class UserRole {
 	
 	@Id
-	@GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="USER_ROLE_ID")
 	private Long id;
 	

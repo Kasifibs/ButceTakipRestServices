@@ -37,7 +37,7 @@ public class AppConfig {
 	
 	private Map<String, ?> jpaProperties(){
 		Map<String,String> jpaPropertiesMap = new HashMap<String,String>();
-        jpaPropertiesMap.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        jpaPropertiesMap.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
         jpaPropertiesMap.put("hibernate.show_sql", "true");
         
         return jpaPropertiesMap;

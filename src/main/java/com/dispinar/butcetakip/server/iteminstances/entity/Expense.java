@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class Expense {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="ID")
     private Long id;
 
