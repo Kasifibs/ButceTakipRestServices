@@ -29,7 +29,7 @@ public class ExpenseQueryWithParamsPreparator {
         predicates.add(userCondition);
 
         if (queryParams.getExpenseItemId() != null) {
-            Predicate expenseItemCondition = criteriaBuilder.equal(exp.get("incomeItem").get("id"), queryParams.getExpenseItemId());
+            Predicate expenseItemCondition = criteriaBuilder.equal(exp.get("expenseItem").get("id"), queryParams.getExpenseItemId());
             predicates.add(expenseItemCondition);
         }
 
