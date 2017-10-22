@@ -23,33 +23,51 @@ public class IncomeQueryWithParamsPreparator {
     public CriteriaQuery<Income> prepareQueryUsingParams(Long userId, IncomeQueryParamsWrapper queryParams){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Income> criteriaQuery = criteriaBuilder.createQuery(Income.class);
-        Root<Income> inc = criteriaQuery.from(Income.class);
+        Root<Income> criteriaRoot = criteriaQuery.from(Income.class);
 
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, criteriaRoot, userId, queryParams);
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaRoot.get("id")));
+        return criteriaQuery;
+    }
+
+    public CriteriaQuery<Long> prepareCountQueryUsingParams(Long userId, IncomeQueryParamsWrapper queryParams){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Income> countRoot = countQuery.from(Income.class);
+
+        countQuery.select(criteriaBuilder.count(countRoot));
+
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, countRoot, userId, queryParams);
+        countQuery.where(predicates.toArray(new Predicate[0]));
+        return countQuery.distinct(true);
+    }
+
+    private List<Predicate> preparePredicates(CriteriaBuilder criteriaBuilder, Root root, Long userId, IncomeQueryParamsWrapper queryParams){
         List<Predicate> predicates = new ArrayList<Predicate>();
-        Predicate userCondition = criteriaBuilder.equal(inc.get("user").get("id"), userId);
+        Predicate userCondition = criteriaBuilder.equal(root.get("user").get("id"), userId);
         predicates.add(userCondition);
 
         if(queryParams.getIncomeItemId()!=null){
-            Predicate incomeItemCondition = criteriaBuilder.equal(inc.get("incomeItem").get("id"), queryParams.getIncomeItemId());
+            Predicate incomeItemCondition = criteriaBuilder.equal(root.get("incomeItem").get("id"), queryParams.getIncomeItemId());
             predicates.add(incomeItemCondition);
         }
 
         if (queryParams.getPeriodId() != null){
-            Predicate periodCondion = criteriaBuilder.equal(inc.get("period").get("id"), queryParams.getPeriodId());
+            Predicate periodCondion = criteriaBuilder.equal(root.get("period").get("id"), queryParams.getPeriodId());
             predicates.add(periodCondion);
         }
 
         if (queryParams.getMinAmount() != null){
-            Predicate minAmountCondition = criteriaBuilder.greaterThanOrEqualTo(inc.<BigDecimal>get("amount"), queryParams.getMinAmount());
+            Predicate minAmountCondition = criteriaBuilder.greaterThanOrEqualTo(root.<BigDecimal>get("amount"), queryParams.getMinAmount());
             predicates.add(minAmountCondition);
         }
 
         if (queryParams.getMaxAmount() != null){
-            Predicate maxAmountCondition = criteriaBuilder.lessThanOrEqualTo(inc.<BigDecimal>get("amount"), queryParams.getMaxAmount());
+            Predicate maxAmountCondition = criteriaBuilder.lessThanOrEqualTo(root.<BigDecimal>get("amount"), queryParams.getMaxAmount());
             predicates.add(maxAmountCondition);
         }
 
-        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-        return criteriaQuery;
+        return predicates;
     }
 }

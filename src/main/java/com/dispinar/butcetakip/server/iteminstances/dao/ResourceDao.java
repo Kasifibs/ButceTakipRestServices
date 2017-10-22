@@ -16,6 +16,8 @@ public interface ResourceDao {
 	List<Resource> findAllByPeriod(Long userId, Long periodId);
 	
 	List<Resource> queryResources(Long userId, ResourceQueryParamsWrapper queryParams);
+
+    Long queryCountOfResources(Long userId, ResourceQueryParamsWrapper queryParams);
 	
 	Resource update(Resource resource);
 	

@@ -1,6 +1,8 @@
 package com.dispinar.butcetakip.server.itemoperations.query;
 
-public class IncomeItemQueryParamsWrapper {
+import com.dispinar.butcetakip.server.common.query.AbstractQueryParamsWrapper;
+
+public class IncomeItemQueryParamsWrapper extends AbstractQueryParamsWrapper{
 	
 	private String name;
 

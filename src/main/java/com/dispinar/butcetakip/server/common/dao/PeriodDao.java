@@ -7,16 +7,18 @@ import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
 
 public interface PeriodDao {
 
-	public void save(Period period);
+	void save(Period period);
 	
-	public Period findById(Long id);
+	Period findById(Long id);
 	
-	public List<Period> findAll(Long userId);
+	List<Period> findAll(Long userId);
 	
-	public List<Period> queryPeriods(Long userId, PeriodQueryParamsWrapper queryParams);
+	List<Period> queryPeriods(Long userId, PeriodQueryParamsWrapper queryParams);
+
+    Long queryCountOfPeriods(Long userId, PeriodQueryParamsWrapper queryParams);
 	
-	public Period update(Period period);
+	Period update(Period period);
 	
-	public void delete(Period period);
+	void delete(Period period);
 	
 }

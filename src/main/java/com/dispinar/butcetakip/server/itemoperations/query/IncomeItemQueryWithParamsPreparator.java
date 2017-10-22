@@ -22,20 +22,39 @@ public class IncomeItemQueryWithParamsPreparator {
 	public CriteriaQuery<IncomeItem> prepareQueryUsingParams(Long userId, IncomeItemQueryParamsWrapper queryParams){
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<IncomeItem> criteriaQuery = criteriaBuilder.createQuery(IncomeItem.class);
-		Root<IncomeItem> incItem = criteriaQuery.from(IncomeItem.class);
-		Join<IncomeItem, User> user = incItem.join("user");
+		Root<IncomeItem> criteriaRoot = criteriaQuery.from(IncomeItem.class);
+		Join<IncomeItem, User> userJoin = criteriaRoot.join("user");
 		
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		Predicate userCondition = criteriaBuilder.equal(user.get("id"), userId);
-		predicates.add(userCondition);
-		
-		if(queryParams.getName()!=null){
-			Predicate nameCondition = criteriaBuilder.like(incItem.<String>get("name"), "%"+queryParams.getName()+"%");
-			predicates.add(nameCondition);
-		}
-		
+		List<Predicate> predicates = preparePredicates(criteriaBuilder, criteriaRoot, userJoin, userId, queryParams);
 		criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaRoot.get("id")));
 		return criteriaQuery;
 	}
+
+	public CriteriaQuery<Long> prepareCountQueryUsingParams(Long userId, IncomeItemQueryParamsWrapper queryParams){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<IncomeItem> countRoot = countQuery.from(IncomeItem.class);
+        Join<IncomeItem, User> userJoin = countRoot.join("user");
+
+        countQuery.select(criteriaBuilder.count(countRoot));
+
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, countRoot, userJoin, userId, queryParams);
+        countQuery.where(predicates.toArray(new Predicate[0]));
+        return countQuery.distinct(true);
+    }
+
+    private List<Predicate> preparePredicates(CriteriaBuilder criteriaBuilder, Root root, Join userJoin, Long userId, IncomeItemQueryParamsWrapper queryParams){
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        Predicate userCondition = criteriaBuilder.equal(userJoin.get("id"), userId);
+        predicates.add(userCondition);
+
+        if(queryParams.getName()!=null){
+            Predicate nameCondition = criteriaBuilder.like(root.<String>get("name"), "%"+queryParams.getName()+"%");
+            predicates.add(nameCondition);
+        }
+
+        return predicates;
+    }
 
 }

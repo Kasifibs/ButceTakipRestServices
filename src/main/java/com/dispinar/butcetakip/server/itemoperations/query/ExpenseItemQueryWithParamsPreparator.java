@@ -22,19 +22,38 @@ public class ExpenseItemQueryWithParamsPreparator {
 	public CriteriaQuery<ExpenseItem> prepareQueryUsingParams(Long userId, ExpenseItemQueryParamsWrapper queryParams){
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ExpenseItem> criteriaQuery = criteriaBuilder.createQuery(ExpenseItem.class);
-		Root<ExpenseItem> expenItem = criteriaQuery.from(ExpenseItem.class);
-		Join<ExpenseItem, User> user = expenItem.join("user");
+		Root<ExpenseItem> criteriaRoot = criteriaQuery.from(ExpenseItem.class);
+		Join<ExpenseItem, User> userJoin = criteriaRoot.join("user");
 		
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		Predicate userCondition = criteriaBuilder.equal(user.get("id"), userId);
-		predicates.add(userCondition);
-		
-		if(queryParams.getName()!=null){
-			Predicate nameCondition = criteriaBuilder.like(expenItem.<String>get("name"), "%"+queryParams.getName()+"%");
-			predicates.add(nameCondition);
-		}
-		
+		List<Predicate> predicates = preparePredicates(criteriaBuilder, criteriaRoot, userJoin, userId, queryParams);
 		criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaRoot.get("id")));
 		return criteriaQuery;
 	}
+
+	public CriteriaQuery<Long> prepareCountQueryUsingParams(Long userId, ExpenseItemQueryParamsWrapper queryParams){
+	    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	    CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+	    Root<ExpenseItem> countRoot = countQuery.from(ExpenseItem.class);
+	    Join<ExpenseItem, User> userJoin = countRoot.join("user");
+
+	    countQuery.select(criteriaBuilder.count(countRoot));
+
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, countRoot, userJoin, userId, queryParams);
+        countQuery.where(predicates.toArray(new Predicate[0]));
+        return countQuery.distinct(true);
+    }
+
+    private List<Predicate> preparePredicates(CriteriaBuilder criteriaBuilder, Root root, Join userJoin, Long userId, ExpenseItemQueryParamsWrapper queryParams){
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        Predicate userCondition = criteriaBuilder.equal(userJoin.get("id"), userId);
+        predicates.add(userCondition);
+
+        if(queryParams.getName()!=null){
+            Predicate nameCondition = criteriaBuilder.like(root.<String>get("name"), "%"+queryParams.getName()+"%");
+            predicates.add(nameCondition);
+        }
+
+        return predicates;
+    }
 }

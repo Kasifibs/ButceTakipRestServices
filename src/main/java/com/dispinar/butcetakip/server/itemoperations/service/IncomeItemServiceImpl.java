@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import com.dispinar.butcetakip.server.common.entity.User;
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.itemoperations.dao.IncomeItemDao;
 import com.dispinar.butcetakip.server.itemoperations.entity.IncomeItem;
@@ -28,12 +29,25 @@ public class IncomeItemServiceImpl implements IncomeItemService{
 		
 		return incomeItemDao.findAll(user.getId());
 	}
-	
+
+	public QueryResultWrapper<IncomeItem> performQueryAndPrepareResultWrapper(String username, IncomeItemQueryParamsWrapper queryParams){
+        List<IncomeItem> incomeItems = queryIncomeItems(username, queryParams);
+        Long countOfIncomeItems = queryCountOfIncomeItems(username, queryParams);
+
+        return new QueryResultWrapper<IncomeItem>(countOfIncomeItems, incomeItems);
+    }
+
 	public List<IncomeItem> queryIncomeItems(String username, IncomeItemQueryParamsWrapper queryParamsWrapper) {
 		User user = getUserService().getUserByUsername(username);
 		
 		return incomeItemDao.queryIncomeItems(user.getId(), queryParamsWrapper);
 	}
+
+	public Long queryCountOfIncomeItems(String username, IncomeItemQueryParamsWrapper queryParams){
+        User user = getUserService().getUserByUsername(username);
+
+        return incomeItemDao.queryCountOfIncomeItems(user.getId(), queryParams);
+    }
 
 	public IncomeItem getIncomeItem(Long id) {
 		return incomeItemDao.findById(id);

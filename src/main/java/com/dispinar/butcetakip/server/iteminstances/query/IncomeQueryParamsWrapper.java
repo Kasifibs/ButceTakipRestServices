@@ -1,11 +1,13 @@
 package com.dispinar.butcetakip.server.iteminstances.query;
 
+import com.dispinar.butcetakip.server.common.query.AbstractQueryParamsWrapper;
+
 import java.math.BigDecimal;
 
 /**
  * Created by Tolga on 13.04.2017.
  */
-public class IncomeQueryParamsWrapper {
+public class IncomeQueryParamsWrapper extends AbstractQueryParamsWrapper {
 
     private Long incomeItemId;
 

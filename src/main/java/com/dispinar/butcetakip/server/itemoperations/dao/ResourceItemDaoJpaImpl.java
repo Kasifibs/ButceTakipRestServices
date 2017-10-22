@@ -45,9 +45,18 @@ public class ResourceItemDaoJpaImpl implements ResourceItemDao{
 	public List<ResourceItem> queryResourceItems(Long userId, ResourceItemQueryParamsWrapper queryParams) {
 		CriteriaQuery<ResourceItem> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
 		TypedQuery<ResourceItem> query = entityManager.createQuery(criteriaQuery);
+
+
+		query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
 		
 		return query.getResultList();
 	}
+
+	public Long queryCountOfResourceItems(Long userId, ResourceItemQueryParamsWrapper queryParams){
+        CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+        return entityManager.createQuery(countQuery).getSingleResult();
+    }
 
 	public ResourceItem update(ResourceItem detachedItem) {
 		ResourceItem attachedResourceItem = entityManager.find(ResourceItem.class, detachedItem.getId());

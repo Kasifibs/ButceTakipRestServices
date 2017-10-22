@@ -25,33 +25,51 @@ public class ResourceQueryWithParamsPreparator {
     public CriteriaQuery<Resource> prepareQueryUsingParams(Long userId, ResourceQueryParamsWrapper queryParams){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Resource> criteriaQuery = criteriaBuilder.createQuery(Resource.class);
-        Root<Resource> res = criteriaQuery.from(Resource.class);
+        Root<Resource> criteriaRoot = criteriaQuery.from(Resource.class);
 
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, criteriaRoot, userId, queryParams);
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaRoot.get("id")));
+        return criteriaQuery;
+    }
+
+    public CriteriaQuery<Long> prepareCountQueryUsingParams(Long userId,  ResourceQueryParamsWrapper queryParams){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Resource> countRoot = countQuery.from(Resource.class);
+
+        countQuery.select(criteriaBuilder.count(countRoot));
+
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, countRoot, userId, queryParams);
+        countQuery.where(predicates.toArray(new Predicate[0]));
+        return countQuery.distinct(true);
+    }
+
+    private List<Predicate> preparePredicates(CriteriaBuilder criteriaBuilder, Root root, Long userId, ResourceQueryParamsWrapper queryParams){
         List<Predicate> predicates = new ArrayList<Predicate>();
-        Predicate userCondition = criteriaBuilder.equal(res.get("user").get("id"), userId);
+        Predicate userCondition = criteriaBuilder.equal(root.get("user").get("id"), userId);
         predicates.add(userCondition);
 
         if(queryParams.getResourceItemId()!=null){
-            Predicate resourceItemCondition = criteriaBuilder.equal(res.get("resourceItem").get("id"), queryParams.getResourceItemId());
+            Predicate resourceItemCondition = criteriaBuilder.equal(root.get("resourceItem").get("id"), queryParams.getResourceItemId());
             predicates.add(resourceItemCondition);
         }
 
         if (queryParams.getPeriodId() != null){
-            Predicate periodCondion = criteriaBuilder.equal(res.get("period").get("id"), queryParams.getPeriodId());
+            Predicate periodCondion = criteriaBuilder.equal(root.get("period").get("id"), queryParams.getPeriodId());
             predicates.add(periodCondion);
         }
 
         if (queryParams.getMinAmount() != null){
-            Predicate minAmountCondition = criteriaBuilder.greaterThanOrEqualTo(res.<BigDecimal>get("amount"), queryParams.getMinAmount());
+            Predicate minAmountCondition = criteriaBuilder.greaterThanOrEqualTo(root.<BigDecimal>get("amount"), queryParams.getMinAmount());
             predicates.add(minAmountCondition);
         }
 
         if (queryParams.getMaxAmount() != null){
-            Predicate maxAmountCondition = criteriaBuilder.lessThanOrEqualTo(res.<BigDecimal>get("amount"), queryParams.getMaxAmount());
+            Predicate maxAmountCondition = criteriaBuilder.lessThanOrEqualTo(root.<BigDecimal>get("amount"), queryParams.getMaxAmount());
             predicates.add(maxAmountCondition);
         }
 
-        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-        return criteriaQuery;
+        return predicates;
     }
 }

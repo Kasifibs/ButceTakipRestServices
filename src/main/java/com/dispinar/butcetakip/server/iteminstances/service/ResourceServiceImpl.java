@@ -1,15 +1,14 @@
 package com.dispinar.butcetakip.server.iteminstances.service;
 
-import java.util.List;
-
-
-
 import com.dispinar.butcetakip.server.common.entity.User;
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.iteminstances.dao.ResourceDao;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
 import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryParamsWrapper;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public class ResourceServiceImpl implements ResourceService{
@@ -37,11 +36,24 @@ public class ResourceServiceImpl implements ResourceService{
 		return resourceDao.findAllByPeriod(user.getId(), periodId);
 	}
 
+	public QueryResultWrapper<Resource> performQueryAndPrepareResultWrapper(String username, ResourceQueryParamsWrapper queryParams){
+        List<Resource> resources = queryResources(username, queryParams);
+        Long countOfResources = queryCountOfResources(username, queryParams);
+
+        return new QueryResultWrapper<Resource>(countOfResources, resources);
+    }
+
 	public List<Resource> queryResources(String username, ResourceQueryParamsWrapper queryParamsWrapper) {
 		User user = getUserService().getUserByUsername(username);
 
 		return resourceDao.queryResources(user.getId(), queryParamsWrapper);
 	}
+
+	public Long queryCountOfResources(String username, ResourceQueryParamsWrapper queryParams){
+        User user = getUserService().getUserByUsername(username);
+
+        return resourceDao.queryCountOfResources(user.getId(), queryParams);
+    }
 
 	public Resource getResource(Long id) {
 		return resourceDao.findById(id);

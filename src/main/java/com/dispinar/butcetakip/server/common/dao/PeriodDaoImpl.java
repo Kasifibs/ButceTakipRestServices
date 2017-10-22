@@ -36,11 +36,19 @@ public class PeriodDaoImpl implements PeriodDao {
 	}
 	
 	public List<Period> queryPeriods(Long userId, PeriodQueryParamsWrapper queryParams) {
-		CriteriaQuery<Period> criteriaQuery = getQueryWithParamsPreparator().prepareQueryUsingParams(userId, queryParams);
+		CriteriaQuery<Period> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
 		TypedQuery<Period> query = entityManager.createQuery(criteriaQuery);
+
+        query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
 		
 		return query.getResultList();
 	}
+
+	public Long queryCountOfPeriods(Long userId, PeriodQueryParamsWrapper queryParams){
+        CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+        return entityManager.createQuery(countQuery).getSingleResult();
+    }
 
 	public Period update(Period detachedPeriod) {
 		Period attachedPeriod = entityManager.find(Period.class, detachedPeriod.getId());

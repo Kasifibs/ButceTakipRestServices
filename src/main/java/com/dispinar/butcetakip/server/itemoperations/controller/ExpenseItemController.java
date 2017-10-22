@@ -2,6 +2,7 @@ package com.dispinar.butcetakip.server.itemoperations.controller;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,11 +42,11 @@ public class ExpenseItemController {
 	}
 	
 	@RequestMapping(value="/sorgula", method=RequestMethod.GET)
-	public List<ExpenseItem> queryResourceItems(ExpenseItemQueryParamsWrapper queryParams){
+	public QueryResultWrapper<ExpenseItem> queryResourceItems(ExpenseItemQueryParamsWrapper queryParams){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String username = auth.getName();
 	      
-		return expenseItemService.queryExpenseItems(username, queryParams);
+		return expenseItemService.performQueryAndPrepareResultWrapper(username, queryParams);
 	}
 	
 	@RequestMapping(value="/kalem/{id}", method=RequestMethod.GET)

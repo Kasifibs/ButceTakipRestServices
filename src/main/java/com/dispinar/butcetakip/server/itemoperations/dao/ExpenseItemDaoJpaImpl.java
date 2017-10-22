@@ -45,9 +45,17 @@ public class ExpenseItemDaoJpaImpl implements ExpenseItemDao{
 	public List<ExpenseItem> queryExpenseItems(Long userId, ExpenseItemQueryParamsWrapper queryParams) {
 		CriteriaQuery<ExpenseItem> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
 		TypedQuery<ExpenseItem> query = entityManager.createQuery(criteriaQuery);
+
+        query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
 		
 		return query.getResultList();
 	}
+
+	public Long queryCountOfExpenseItems(Long userId, ExpenseItemQueryParamsWrapper queryParams){
+	    CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+	    return entityManager.createQuery(countQuery).getSingleResult();
+    }
 
 	public ExpenseItem update(ExpenseItem detachedExpenseItem) {
 		ExpenseItem attachedExpenseItem = entityManager.find(ExpenseItem.class, detachedExpenseItem.getId());

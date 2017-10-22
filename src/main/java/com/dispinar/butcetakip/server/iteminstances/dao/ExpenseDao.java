@@ -20,6 +20,8 @@ public interface ExpenseDao {
 
     List<Expense> queryExpenses(Long userId, ExpenseQueryParamsWrapper queryParams);
 
+    Long queryCountOfExpenses(Long userId, ExpenseQueryParamsWrapper queryParams);
+
     Expense update(Expense expense);
 
     void delete(Expense expense);

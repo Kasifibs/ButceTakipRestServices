@@ -24,36 +24,55 @@ public class PeriodQueryWithParamsPreparator {
 	public CriteriaQuery<Period> prepareQueryUsingParams(Long userId, PeriodQueryParamsWrapper queryParams){
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Period> criteriaQuery = criteriaBuilder.createQuery(Period.class);
-		Root<Period> period = criteriaQuery.from(Period.class);
-		Join<Period, User> user = period.join("user");
+		Root<Period> criteriaRoot = criteriaQuery.from(Period.class);
+		Join<Period, User> userJoin = criteriaRoot.join("user");
 		
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		Predicate userCondition = criteriaBuilder.equal(user.get("id"), userId);
-		predicates.add(userCondition);
-		
-		if(queryParams.getName()!=null){
-			Predicate nameCondition = criteriaBuilder.like(period.<String>get("name"), "%"+queryParams.getName()+"%");
-			predicates.add(nameCondition);
-		}
-		if(queryParams.getMinBeginDate()!=null){
-			Predicate minBeginDateCondition = criteriaBuilder.greaterThanOrEqualTo(period.<Date>get("beginDate"), queryParams.getMinBeginDate());
-			predicates.add(minBeginDateCondition);
-		}
-		if(queryParams.getMaxBeginDate()!=null){
-			Predicate maxBeginDateCondition = criteriaBuilder.lessThanOrEqualTo(period.<Date>get("beginDate"), queryParams.getMaxBeginDate());
-			predicates.add(maxBeginDateCondition);
-		}
-		if(queryParams.getMinEndDate()!=null){
-			Predicate minEndDateCondition = criteriaBuilder.greaterThanOrEqualTo(period.<Date>get("endDate"), queryParams.getMinEndDate());
-			predicates.add(minEndDateCondition);
-		}
-		if(queryParams.getMaxEndDate()!=null){
-			Predicate maxEndDateCondition = criteriaBuilder.lessThanOrEqualTo(period.<Date>get("endDate"), queryParams.getMaxEndDate());
-			predicates.add(maxEndDateCondition);
-		}
-		
+		List<Predicate> predicates = preparePredicates(criteriaBuilder, criteriaRoot, userJoin, userId, queryParams);
 		criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaRoot.get("id")));
 		return criteriaQuery;
 	}
+
+	public CriteriaQuery<Long> prepareCountQueryUsingParams(Long userId, PeriodQueryParamsWrapper queryParams){
+	    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	    CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+	    Root<Period> countRoot = countQuery.from(Period.class);
+	    Join<Period, User> userJoin = countRoot.join("user");
+
+	    countQuery.select(criteriaBuilder.count(countRoot));
+
+        List<Predicate> predicates = preparePredicates(criteriaBuilder, countRoot, userJoin, userId, queryParams);
+        countQuery.where(predicates.toArray(new Predicate[0]));
+        return countQuery.distinct(true);
+    }
+
+    private List<Predicate> preparePredicates(CriteriaBuilder criteriaBuilder, Root root, Join userJoin, Long userId, PeriodQueryParamsWrapper queryParams){
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        Predicate userCondition = criteriaBuilder.equal(userJoin.get("id"), userId);
+        predicates.add(userCondition);
+
+        if(queryParams.getName()!=null){
+            Predicate nameCondition = criteriaBuilder.like(root.<String>get("name"), "%"+queryParams.getName()+"%");
+            predicates.add(nameCondition);
+        }
+        if(queryParams.getMinBeginDate()!=null){
+            Predicate minBeginDateCondition = criteriaBuilder.greaterThanOrEqualTo(root.<Date>get("beginDate"), queryParams.getMinBeginDate());
+            predicates.add(minBeginDateCondition);
+        }
+        if(queryParams.getMaxBeginDate()!=null){
+            Predicate maxBeginDateCondition = criteriaBuilder.lessThanOrEqualTo(root.<Date>get("beginDate"), queryParams.getMaxBeginDate());
+            predicates.add(maxBeginDateCondition);
+        }
+        if(queryParams.getMinEndDate()!=null){
+            Predicate minEndDateCondition = criteriaBuilder.greaterThanOrEqualTo(root.<Date>get("endDate"), queryParams.getMinEndDate());
+            predicates.add(minEndDateCondition);
+        }
+        if(queryParams.getMaxEndDate()!=null){
+            Predicate maxEndDateCondition = criteriaBuilder.lessThanOrEqualTo(root.<Date>get("endDate"), queryParams.getMaxEndDate());
+            predicates.add(maxEndDateCondition);
+        }
+
+        return predicates;
+    }
 
 }

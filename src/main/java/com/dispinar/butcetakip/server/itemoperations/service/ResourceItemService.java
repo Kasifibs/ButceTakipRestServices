@@ -2,20 +2,25 @@ package com.dispinar.butcetakip.server.itemoperations.service;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.itemoperations.entity.ResourceItem;
 import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryParamsWrapper;
 
 public interface ResourceItemService {
 
-	public void saveResourceItem(ResourceItem resourceItem, String username);
+	void saveResourceItem(ResourceItem resourceItem, String username);
 	
-	public List<ResourceItem> getAllResourceItems(String username);
+	List<ResourceItem> getAllResourceItems(String username);
+
+    QueryResultWrapper<ResourceItem> performQueryAndPrepareResultWrapper(String username, ResourceItemQueryParamsWrapper queryParams);
 	
-	public List<ResourceItem> queryResourceItems(String username, ResourceItemQueryParamsWrapper queryParamsWrapper);
+	List<ResourceItem> queryResourceItems(String username, ResourceItemQueryParamsWrapper queryParamsWrapper);
+
+    Long queryCountOfResourceItems(String username, ResourceItemQueryParamsWrapper queryParams);
 	
-	public ResourceItem getResourceItem(Long id);
+	ResourceItem getResourceItem(Long id);
 	
-	public ResourceItem updateResourceItem(ResourceItem resourceItem);
+	ResourceItem updateResourceItem(ResourceItem resourceItem);
 	
-	public void deleteResourceItem(Long id);
+	void deleteResourceItem(Long id);
 }

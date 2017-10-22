@@ -1,5 +1,6 @@
 package com.dispinar.butcetakip.server.iteminstances.service;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.iteminstances.entity.Expense;
 import com.dispinar.butcetakip.server.iteminstances.entity.Income;
 import com.dispinar.butcetakip.server.iteminstances.query.ExpenseQueryParamsWrapper;
@@ -19,7 +20,11 @@ public interface ExpenseService {
 
     List<Expense> getAllExpensesByPeriod(String username, Long periodId);
 
+    QueryResultWrapper<Expense> performQueryAndPrepareResultWrapper(String username, ExpenseQueryParamsWrapper queryParams);
+
     List<Expense> queryExpenses(String username, ExpenseQueryParamsWrapper queryParamsWrapper);
+
+    Long queryCountOfExpenses(String username, ExpenseQueryParamsWrapper queryParams);
 
     Expense getExpense(Long id);
 

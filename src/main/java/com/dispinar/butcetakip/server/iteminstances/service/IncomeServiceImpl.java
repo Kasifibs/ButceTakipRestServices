@@ -1,6 +1,7 @@
 package com.dispinar.butcetakip.server.iteminstances.service;
 
 import com.dispinar.butcetakip.server.common.entity.User;
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.iteminstances.dao.IncomeDao;
 import com.dispinar.butcetakip.server.iteminstances.entity.Income;
@@ -40,10 +41,23 @@ public class IncomeServiceImpl implements IncomeService {
         return incomeDao.findAllByPeriodId(user.getId(), periodId);
     }
 
+    public QueryResultWrapper<Income> performQueryAndPrepareResultWrapper(String username, IncomeQueryParamsWrapper queryParams){
+        List<Income> incomes = queryIncomes(username, queryParams);
+        Long countOfIncomes = queryCountOfIncomes(username, queryParams);
+
+        return new QueryResultWrapper<Income>(countOfIncomes, incomes);
+    }
+
     public List<Income> queryIncomes(String username, IncomeQueryParamsWrapper queryParamsWrapper) {
         User user = userService.getUserByUsername(username);
 
         return incomeDao.queryIncomes(user.getId(), queryParamsWrapper);
+    }
+
+    public Long queryCountOfIncomes(String username, IncomeQueryParamsWrapper queryParams){
+        User user = userService.getUserByUsername(username);
+
+        return incomeDao.queryCountOfIncomes(user.getId(), queryParams);
     }
 
     public Income getIncome(Long id) {

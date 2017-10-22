@@ -61,8 +61,16 @@ public class ResourceDaoJpaImpl implements ResourceDao{
 		CriteriaQuery<Resource> resourceQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
 		TypedQuery<Resource>  query = entityManager.createQuery(resourceQuery);
 
+        query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
+
 		return query.getResultList();
 	}
+
+	public Long queryCountOfResources(Long userId, ResourceQueryParamsWrapper queryParams){
+	    CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+	    return entityManager.createQuery(countQuery).getSingleResult();
+    }
 
 	public Resource update(Resource detachedResource) {
 		Resource attachedResource = entityManager.find(Resource.class, detachedResource.getId());

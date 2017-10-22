@@ -2,20 +2,25 @@ package com.dispinar.butcetakip.server.itemoperations.service;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.itemoperations.entity.ExpenseItem;
 import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryParamsWrapper;
 
 public interface ExpenseItemService {
 	
-	public void saveExpenseItem(ExpenseItem expenseItem, String username);
+	void saveExpenseItem(ExpenseItem expenseItem, String username);
 	
-	public List<ExpenseItem> getAllExpenseItems(String username);
+	List<ExpenseItem> getAllExpenseItems(String username);
+
+    QueryResultWrapper<ExpenseItem> performQueryAndPrepareResultWrapper(String username, ExpenseItemQueryParamsWrapper queryParams);
 	
-	public List<ExpenseItem> queryExpenseItems(String username, ExpenseItemQueryParamsWrapper queryParamsWrapper);
+	List<ExpenseItem> queryExpenseItems(String username, ExpenseItemQueryParamsWrapper queryParamsWrapper);
+
+    Long queryCountOfExpenseItems(String username, ExpenseItemQueryParamsWrapper queryParams);
 	
-	public ExpenseItem getExpenseItem(Long id);
+	ExpenseItem getExpenseItem(Long id);
 	
-	public ExpenseItem updateExpenseItem(ExpenseItem expenseItem);
+	ExpenseItem updateExpenseItem(ExpenseItem expenseItem);
 	
-	public void deleteExpenseItem(Long id);
+	void deleteExpenseItem(Long id);
 }

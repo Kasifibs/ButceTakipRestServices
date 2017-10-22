@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class PeriodQueryParamsWrapper {
+public class PeriodQueryParamsWrapper extends AbstractQueryParamsWrapper {
 	
 	private String name;
 	

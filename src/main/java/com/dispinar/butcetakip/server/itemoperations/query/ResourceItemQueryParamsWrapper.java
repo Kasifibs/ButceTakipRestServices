@@ -1,6 +1,8 @@
 package com.dispinar.butcetakip.server.itemoperations.query;
 
-public class ResourceItemQueryParamsWrapper {
+import com.dispinar.butcetakip.server.common.query.AbstractQueryParamsWrapper;
+
+public class ResourceItemQueryParamsWrapper extends AbstractQueryParamsWrapper {
 	
 	private String name;
 

@@ -23,6 +23,8 @@ public interface IncomeDao {
 
     List<Income> queryIncomes(Long userId, IncomeQueryParamsWrapper queryParams);
 
+    Long queryCountOfIncomes(Long userId, IncomeQueryParamsWrapper queryParams);
+
     Income update(Income income);
 
     void delete(Income income);

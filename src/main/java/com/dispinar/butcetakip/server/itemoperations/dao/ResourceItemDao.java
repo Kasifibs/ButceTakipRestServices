@@ -7,17 +7,19 @@ import com.dispinar.butcetakip.server.itemoperations.query.ResourceItemQueryPara
 
 public interface ResourceItemDao {
 	
-	public void save(ResourceItem resourceItem);
+	void save(ResourceItem resourceItem);
 
-	public ResourceItem findById(Long id);
+	ResourceItem findById(Long id);
 	
-	public ResourceItem findByName(String name);
+	ResourceItem findByName(String name);
 	
-	public List<ResourceItem> findAll(Long userId);
+	List<ResourceItem> findAll(Long userId);
 	
-	public List<ResourceItem> queryResourceItems(Long userId, ResourceItemQueryParamsWrapper queryParams);
+	List<ResourceItem> queryResourceItems(Long userId, ResourceItemQueryParamsWrapper queryParams);
+
+    Long queryCountOfResourceItems(Long userId, ResourceItemQueryParamsWrapper queryParams);
 	
-	public ResourceItem update(ResourceItem resourceItem);
+	ResourceItem update(ResourceItem resourceItem);
 	
-	public void delete(ResourceItem resourceItem);
+	void delete(ResourceItem resourceItem);
 }

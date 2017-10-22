@@ -2,20 +2,25 @@ package com.dispinar.butcetakip.server.itemoperations.service;
 
 import java.util.List;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.itemoperations.entity.IncomeItem;
 import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryParamsWrapper;
 
 public interface IncomeItemService {
 
-	public void saveIncomeItem(IncomeItem incomeItem, String username);
+	void saveIncomeItem(IncomeItem incomeItem, String username);
 	
-	public List<IncomeItem> getAllIncomeItems(String username);
+	List<IncomeItem> getAllIncomeItems(String username);
+
+    QueryResultWrapper<IncomeItem> performQueryAndPrepareResultWrapper(String username, IncomeItemQueryParamsWrapper queryParams);
 	
-	public List<IncomeItem> queryIncomeItems(String username, IncomeItemQueryParamsWrapper queryParamsWrapper);
+	List<IncomeItem> queryIncomeItems(String username, IncomeItemQueryParamsWrapper queryParamsWrapper);
+
+    Long queryCountOfIncomeItems(String username, IncomeItemQueryParamsWrapper queryParams);
 	
-	public IncomeItem getIncomeItem(Long id);
+	IncomeItem getIncomeItem(Long id);
 	
-	public IncomeItem updateIncomeItem(IncomeItem incomeItem);
+	IncomeItem updateIncomeItem(IncomeItem incomeItem);
 	
-	public void deleteIncomeItem(Long id);
+	void deleteIncomeItem(Long id);
 }

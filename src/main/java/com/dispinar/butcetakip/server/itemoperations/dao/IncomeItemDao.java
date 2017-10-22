@@ -7,18 +7,20 @@ import com.dispinar.butcetakip.server.itemoperations.query.IncomeItemQueryParams
 
 public interface IncomeItemDao {
 	
-	public void save(IncomeItem incomeItem);
+	void save(IncomeItem incomeItem);
 	
-	public IncomeItem findById(Long id);
+	IncomeItem findById(Long id);
 	
-	public IncomeItem findByName(String name);
+	IncomeItem findByName(String name);
 	
-	public List<IncomeItem> findAll(Long userId);
+	List<IncomeItem> findAll(Long userId);
 	
-	public List<IncomeItem> queryIncomeItems(Long userId, IncomeItemQueryParamsWrapper queryParams);
+	List<IncomeItem> queryIncomeItems(Long userId, IncomeItemQueryParamsWrapper queryParams);
+
+    Long queryCountOfIncomeItems(Long userId, IncomeItemQueryParamsWrapper queryParams);
 	
-	public IncomeItem update(IncomeItem incomeItem);
+	IncomeItem update(IncomeItem incomeItem);
 	
-	public void delete(IncomeItem incomeItem);
+	void delete(IncomeItem incomeItem);
 
 }

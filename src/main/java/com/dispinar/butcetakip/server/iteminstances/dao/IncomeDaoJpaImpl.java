@@ -60,7 +60,15 @@ public class IncomeDaoJpaImpl implements  IncomeDao {
         CriteriaQuery<Income> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
         TypedQuery<Income> query = entityManager.createQuery(criteriaQuery);
 
+        query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
+
         return query.getResultList();
+    }
+
+    public Long queryCountOfIncomes(Long userId, IncomeQueryParamsWrapper queryParams){
+        CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+        return entityManager.createQuery(countQuery).getSingleResult();
     }
 
     public Income update(Income detachedIncome) {

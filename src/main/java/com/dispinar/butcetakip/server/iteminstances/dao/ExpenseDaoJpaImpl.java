@@ -61,7 +61,15 @@ public class ExpenseDaoJpaImpl implements  ExpenseDao {
         CriteriaQuery<Expense> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
         TypedQuery<Expense> query = entityManager.createQuery(criteriaQuery);
 
+        query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
+
         return query.getResultList();
+    }
+
+    public Long queryCountOfExpenses(Long userId, ExpenseQueryParamsWrapper queryParams){
+        CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+        return entityManager.createQuery(countQuery).getSingleResult();
     }
 
     public Expense update(Expense detachedExpense) {

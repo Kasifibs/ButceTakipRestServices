@@ -1,6 +1,7 @@
 package com.dispinar.butcetakip.server.iteminstances.service;
 
 import com.dispinar.butcetakip.server.common.entity.User;
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.common.service.UserService;
 import com.dispinar.butcetakip.server.iteminstances.dao.ExpenseDao;
 import com.dispinar.butcetakip.server.iteminstances.entity.Expense;
@@ -40,10 +41,23 @@ public class ExpenseServiceImpl implements  ExpenseService {
         return expenseDao.findAllByPeriodId(user.getId(), periodId);
     }
 
+    public QueryResultWrapper<Expense> performQueryAndPrepareResultWrapper(String username, ExpenseQueryParamsWrapper queryParams){
+        List<Expense> expenses = queryExpenses(username, queryParams);
+        Long countOfExpenses = queryCountOfExpenses(username, queryParams);
+
+        return new QueryResultWrapper<Expense>(countOfExpenses, expenses);
+    }
+
     public List<Expense> queryExpenses(String username, ExpenseQueryParamsWrapper queryParamsWrapper) {
         User user = userService.getUserByUsername(username);
 
         return expenseDao.queryExpenses(user.getId(), queryParamsWrapper);
+    }
+
+    public Long queryCountOfExpenses(String username, ExpenseQueryParamsWrapper queryParams){
+        User user = userService.getUserByUsername(username);
+
+        return expenseDao.queryCountOfExpenses(user.getId(), queryParams);
     }
 
     public Expense getExpense(Long id) {

@@ -1,5 +1,6 @@
 package com.dispinar.butcetakip.server.iteminstances.controller;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
 import com.dispinar.butcetakip.server.iteminstances.query.ResourceQueryParamsWrapper;
 import com.dispinar.butcetakip.server.iteminstances.service.ResourceService;
@@ -36,11 +37,11 @@ public class ResourceController {
 	}
 
     @RequestMapping(value="/sorgula", method=RequestMethod.GET)
-    public List<Resource> queryResources(ResourceQueryParamsWrapper queryParams){
+    public QueryResultWrapper<Resource> queryResources(ResourceQueryParamsWrapper queryParams){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        return resourceService.queryResources(username, queryParams);
+        return resourceService.performQueryAndPrepareResultWrapper(username, queryParams);
     }
 	
 	@RequestMapping(value="/varlik/{id}", method=RequestMethod.GET)

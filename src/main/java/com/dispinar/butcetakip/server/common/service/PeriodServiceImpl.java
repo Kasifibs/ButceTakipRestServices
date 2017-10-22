@@ -12,6 +12,7 @@ import com.dispinar.butcetakip.server.common.dao.PeriodDao;
 import com.dispinar.butcetakip.server.common.entity.Period;
 import com.dispinar.butcetakip.server.common.entity.User;
 import com.dispinar.butcetakip.server.common.query.PeriodQueryParamsWrapper;
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.iteminstances.entity.Expense;
 import com.dispinar.butcetakip.server.iteminstances.entity.Income;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
@@ -48,12 +49,25 @@ public class PeriodServiceImpl implements PeriodService{
 		
 		return periodDao.findAll(user.getId());
 	}
+
+	public QueryResultWrapper<Period> performQueryAndPrepareResultWrapper(String username, PeriodQueryParamsWrapper queryParams){
+        List<Period> periods = queryPeriods(username, queryParams);
+        Long countOfPeriods = queryCountOfPeriods(username, queryParams);
+
+        return new QueryResultWrapper<Period>(countOfPeriods, periods);
+    }
 	
 	public List<Period> queryPeriods(String username, PeriodQueryParamsWrapper queryParams) {
 		User user = getUserService().getUserByUsername(username);
 		
 		return periodDao.queryPeriods(user.getId(), queryParams);
 	}
+
+	public Long queryCountOfPeriods(String username, PeriodQueryParamsWrapper queryParams){
+        User user = getUserService().getUserByUsername(username);
+
+        return periodDao.queryCountOfPeriods(user.getId(), queryParams);
+    }
 
 	public Period getPeriod(Long id) {
 		return periodDao.findById(id);

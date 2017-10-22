@@ -5,6 +5,7 @@ import java.util.List;
 import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodExpensesInformationDTO;
 import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodIncomesInformationDTO;
 import com.dispinar.butcetakip.server.common.controller.dto.period.PeriodResourcesInformationDTO;
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.iteminstances.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,11 +47,11 @@ public class PeriodController {
 	}
 	
 	@RequestMapping(value="/sorgula", method=RequestMethod.GET)
-	public List<Period> queryPeriods(PeriodQueryParamsWrapper queryParams){
+	public QueryResultWrapper<Period> queryPeriods(PeriodQueryParamsWrapper queryParams){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String username = auth.getName();
 	      
-		return periodService.queryPeriods(username, queryParams);
+		return periodService.performQueryAndPrepareResultWrapper(username, queryParams);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

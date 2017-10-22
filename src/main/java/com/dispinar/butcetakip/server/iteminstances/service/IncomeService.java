@@ -1,5 +1,6 @@
 package com.dispinar.butcetakip.server.iteminstances.service;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.iteminstances.entity.Income;
 import com.dispinar.butcetakip.server.iteminstances.query.IncomeQueryParamsWrapper;
 
@@ -16,7 +17,11 @@ public interface IncomeService {
 
     List<Income> getAllIncomesByPeriodId(String username, Long periodId);
 
+    QueryResultWrapper<Income> performQueryAndPrepareResultWrapper(String username, IncomeQueryParamsWrapper queryParams);
+
     List<Income> queryIncomes(String username, IncomeQueryParamsWrapper queryParamsWrapper);
+
+    Long queryCountOfIncomes(String username, IncomeQueryParamsWrapper queryParams);
 
     Income getIncome(Long id);
 

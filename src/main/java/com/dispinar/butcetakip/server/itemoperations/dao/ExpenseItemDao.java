@@ -7,17 +7,19 @@ import com.dispinar.butcetakip.server.itemoperations.query.ExpenseItemQueryParam
 
 public interface ExpenseItemDao {
 	
-	public void save(ExpenseItem expenseItem);
+	void save(ExpenseItem expenseItem);
 
-	public ExpenseItem findById(Long id);
+	ExpenseItem findById(Long id);
 	
-	public ExpenseItem findByName(String name);
+	ExpenseItem findByName(String name);
 	
-	public List<ExpenseItem> findAll(Long userId);
+	List<ExpenseItem> findAll(Long userId);
 	
-	public List<ExpenseItem> queryExpenseItems(Long userId, ExpenseItemQueryParamsWrapper queryParams);
+	List<ExpenseItem> queryExpenseItems(Long userId, ExpenseItemQueryParamsWrapper queryParams);
+
+    Long queryCountOfExpenseItems(Long userId, ExpenseItemQueryParamsWrapper queryParams);
 	
-	public ExpenseItem update(ExpenseItem expenseItem);
+	ExpenseItem update(ExpenseItem expenseItem);
 	
-	public void delete(ExpenseItem expenseItem);
+	void delete(ExpenseItem expenseItem);
 }

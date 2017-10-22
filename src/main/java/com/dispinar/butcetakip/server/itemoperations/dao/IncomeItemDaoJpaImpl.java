@@ -43,11 +43,19 @@ public class IncomeItemDaoJpaImpl implements IncomeItemDao
 	}
 	
 	public List<IncomeItem> queryIncomeItems(Long userId, IncomeItemQueryParamsWrapper queryParams) {
-		CriteriaQuery<IncomeItem> criteriaQuery = getQueryWithParamsPreparator().prepareQueryUsingParams(userId, queryParams);
+		CriteriaQuery<IncomeItem> criteriaQuery = queryWithParamsPreparator.prepareQueryUsingParams(userId, queryParams);
 		TypedQuery<IncomeItem> query = entityManager.createQuery(criteriaQuery);
+
+        query.setFirstResult((queryParams.getPageNumber() - 1) * queryParams.getPageSize());
+        query.setMaxResults(queryParams.getPageSize());
 		
 		return query.getResultList();
 	}
+
+	public Long queryCountOfIncomeItems(Long userId, IncomeItemQueryParamsWrapper queryParams){
+        CriteriaQuery<Long> countQuery = queryWithParamsPreparator.prepareCountQueryUsingParams(userId, queryParams);
+        return entityManager.createQuery(countQuery).getSingleResult();
+    }
 
 	public IncomeItem update(IncomeItem detachedIncomeItem) {
 		IncomeItem attachedIncomeItem = entityManager.find(IncomeItem.class, detachedIncomeItem.getId());

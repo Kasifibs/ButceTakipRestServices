@@ -1,5 +1,6 @@
 package com.dispinar.butcetakip.server.iteminstances.controller;
 
+import com.dispinar.butcetakip.server.common.query.QueryResultWrapper;
 import com.dispinar.butcetakip.server.iteminstances.entity.Income;
 import com.dispinar.butcetakip.server.iteminstances.query.IncomeQueryParamsWrapper;
 import com.dispinar.butcetakip.server.iteminstances.service.IncomeService;
@@ -39,11 +40,11 @@ public class IncomeController {
     }
 
     @RequestMapping(value="/sorgula", method=RequestMethod.GET)
-    public List<Income> queryIncomes(IncomeQueryParamsWrapper queryParamsWrapper){
+    public QueryResultWrapper<Income> queryIncomes(IncomeQueryParamsWrapper queryParamsWrapper){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        return incomeService.queryIncomes(username, queryParamsWrapper);
+        return incomeService.performQueryAndPrepareResultWrapper(username, queryParamsWrapper);
     }
 
     @RequestMapping(value="/gelir/{id}", method=RequestMethod.GET)
